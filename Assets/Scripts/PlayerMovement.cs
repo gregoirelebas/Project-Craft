@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -12,38 +13,61 @@ public class PlayerMovement : MonoBehaviour
 	[SerializeField] private float groundDistance = 0.4f;
 	[SerializeField] private LayerMask groundMask = 0;
 
+	private Vector2 moveInput = Vector2.zero;
+
 	private CharacterController controller = null;
 	private Vector3 velocity = Vector3.zero;
 	private bool isGrounded = false;
+	private bool jumpInput = false;
 
 	private void Awake()
 	{
 		controller = GetComponent<CharacterController>();
+
+		Cursor.lockState = CursorLockMode.Locked;
 	}
 
 	private void Update()
 	{
-		isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-
-		if (isGrounded && velocity.y < 0.0f)
-		{
-			velocity.y = -2.0f;
-		}
-
-		float x = Input.GetAxis("Horizontal");
-		float z = Input.GetAxis("Vertical");
-
-		Vector3 move = transform.right * x + transform.forward * z;
-
-		controller.Move(move * speed * Time.deltaTime);
-
-		if (isGrounded && Input.GetButtonDown("Jump"))
-		{
-			velocity.y = Mathf.Sqrt(jumpHeight * -2.0f * gravity);
-		}
-
 		velocity.y += gravity * Time.deltaTime;
 
+		isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+
+		Vector3 move;
+
+		//Ground control
+		if (isGrounded)
+		{
+			move = transform.right * moveInput.x + transform.forward * moveInput.y;			
+
+			if (velocity.y < 0.0f)
+			{
+				velocity.y = -2.0f;
+			}
+
+			if (jumpInput)
+			{
+				jumpInput = false;
+				velocity.y = Mathf.Sqrt(jumpHeight * -2.0f * gravity);
+			}
+		}
+		//Air control
+		else
+		{
+			move = transform.right * moveInput.x + transform.forward * moveInput.y;
+		}
+
+		controller.Move(move * speed * Time.deltaTime);
 		controller.Move(velocity * Time.deltaTime);
+	}
+
+	public void OnMove(InputValue inputValue)
+	{
+		moveInput = inputValue.Get<Vector2>();
+	}
+
+	public void OnJump(InputValue inputValue)
+	{
+		jumpInput = inputValue.isPressed;
 	}
 }
