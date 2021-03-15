@@ -14,7 +14,6 @@ public class MouseLook : MonoBehaviour
 	private void Awake()
 	{
 		Cursor.lockState = CursorLockMode.Locked;
-		Cursor.visible = false;
 	}
 
 	private void Update()
@@ -28,7 +27,7 @@ public class MouseLook : MonoBehaviour
 		playerCamera.localRotation = Quaternion.Euler(xRotation, 0.0f, 0.0f);
 	}
 
-	public void OnLook(InputValue inputValue)
+	private void OnLook(InputValue inputValue)
 	{
 		mouseInput = inputValue.Get<Vector2>();
 	}

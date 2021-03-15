@@ -61,12 +61,12 @@ public class PlayerMovement : MonoBehaviour
 		controller.Move(velocity * Time.deltaTime);
 	}
 
-	public void OnMove(InputValue inputValue)
+	private void OnMove(InputValue inputValue)
 	{
 		moveInput = inputValue.Get<Vector2>();
 	}
 
-	public void OnJump(InputValue inputValue)
+	private void OnJump(InputValue inputValue)
 	{
 		jumpInput = inputValue.isPressed;
 	}
