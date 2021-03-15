@@ -61,11 +61,17 @@ public class PlayerMovement : MonoBehaviour
 		controller.Move(velocity * Time.deltaTime);
 	}
 
+	/// <summary>
+	/// Read the movement value.
+	/// </summary>
 	private void OnMove(InputValue inputValue)
 	{
 		moveInput = inputValue.Get<Vector2>();
 	}
 
+	/// <summary>
+	/// Read the jump input.
+	/// </summary>
 	private void OnJump(InputValue inputValue)
 	{
 		jumpInput = inputValue.isPressed;

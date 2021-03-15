@@ -27,6 +27,9 @@ public class MouseLook : MonoBehaviour
 		playerCamera.localRotation = Quaternion.Euler(xRotation, 0.0f, 0.0f);
 	}
 
+	/// <summary>
+	/// Read the mouse delta.
+	/// </summary>
 	private void OnLook(InputValue inputValue)
 	{
 		mouseInput = inputValue.Get<Vector2>();
