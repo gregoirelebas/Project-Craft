@@ -4501,8 +4501,8 @@ GameObject:
   - component: {fileID: 1308631773}
   - component: {fileID: 1308631775}
   m_Layer: 8
-  m_Name: FPS Controller
-  m_TagString: Untagged
+  m_Name: Player
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4523,7 +4523,7 @@ CharacterController:
   m_SlopeLimit: 45
   m_StepOffset: 0.7
   m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
+  m_MinMoveDistance: 0
   m_Center: {x: 0, y: 1.8, z: 0}
 --- !u!4 &1308631772
 Transform:
@@ -5468,7 +5468,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c86767cae970ced488d0875cec7bed23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
+  item: {fileID: 11400000, guid: c0a06eb4decdeed449632f73dbbfe5d5, type: 2}
 --- !u!65 &1644394038
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5477,7 +5477,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1644394036}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
@@ -5668,7 +5668,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c86767cae970ced488d0875cec7bed23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
+  item: {fileID: 11400000, guid: dd589680b6f20b043a31d26ccfd18e71, type: 2}
 --- !u!65 &1696935894
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5677,7 +5677,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1696935892}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}

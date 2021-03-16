@@ -4,14 +4,7 @@ using UnityEngine;
 
 public class WorldItem : MonoBehaviour, IInteractable, IHoverable
 {
-	public enum ItemType
-	{
-		Stone,
-		Wood,
-		Weed
-	}
-
-	[SerializeField] private ItemType type = ItemType.Stone;
+	[SerializeField] private Item item = null;
 
 	public void OnCursorEnter()
 	{
@@ -25,7 +18,7 @@ public class WorldItem : MonoBehaviour, IInteractable, IHoverable
 
 	public void OnInteraction()
 	{
-		Debug.Log("Picked up :" + type.ToString());
+		Debug.Log("Picked up :" + item.label);
 
 		Destroy(gameObject);
 	}
