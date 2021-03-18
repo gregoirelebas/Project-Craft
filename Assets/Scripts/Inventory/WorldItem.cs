@@ -5,6 +5,9 @@ using UnityEngine;
 public class WorldItem : MonoBehaviour, IInteractable, IHoverable
 {
 	[SerializeField] private Item item = null;
+	[SerializeField] private int resistance = 1;
+
+	private int tapCount = 0;
 
 	public void OnCursorEnter()
 	{
@@ -24,15 +27,18 @@ public class WorldItem : MonoBehaviour, IInteractable, IHoverable
 
 	public void OnInteraction()
 	{
-		Debug.Log("Picked up :" + item.label);
+		tapCount++;
 
-		EventParameters parameters = new EventParameters();
-		parameters.@item = item;
+		if (tapCount >= resistance)
+		{
+			if (GameManager.Instance.GetPlayer().AddItem(item))
+			{
+				//EventManager.Instance.TriggerEvent(EventManager.EventType.OnItemPickUp, null);
 
-		EventManager.Instance.TriggerEvent(EventManager.EventType.OnItemPickUp, parameters);
+				OnCursorExit();
 
-		OnCursorExit();
-
-		Destroy(gameObject);
+				Destroy(gameObject);
+			}
+		}
 	}
 }

@@ -23,6 +23,11 @@ public class Inventory
 		return items.Count;
 	}
 
+	public bool HasFreeSpace()
+	{
+		return items.Count < capacity;
+	}
+
 	public Item GetItem(int index)
 	{
 		if (index >= 0 && index < items.Count)

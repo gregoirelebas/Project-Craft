@@ -26,11 +26,6 @@ public class Player : MonoBehaviour
 		inventory.AddItem(itemBank.GetItemByLabel("Stone"));
 	}
 
-	private void OnEnable()
-	{
-		EventManager.Instance.StartListening(EventManager.EventType.OnItemPickUp, AddItemOnPickUp);
-	}
-
 	private void Update()
 	{
 		if (Keyboard.current.iKey.wasPressedThisFrame)
@@ -46,12 +41,15 @@ public class Player : MonoBehaviour
 		}
 	}
 
-	private void AddItemOnPickUp(EventParameters parameters)
+	public bool AddItem(Item item)
 	{
-		Item item = parameters.item;
-		if (item != null)
+		if (item != null && inventory.HasFreeSpace())
 		{
 			inventory.AddItem(item);
+
+			return true;
 		}
+
+		return false;
 	}
 }
