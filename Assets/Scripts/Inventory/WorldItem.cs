@@ -8,22 +8,30 @@ public class WorldItem : MonoBehaviour, IInteractable, IHoverable
 
 	public void OnCursorEnter()
 	{
-		Debug.Log("Enter");
+		EventParameters parameters = new EventParameters();
+		parameters.@string = "Pick up";
+
+		EventManager.Instance.TriggerEvent(EventManager.EventType.OnCursorEnter, parameters);
 	}
 
 	public void OnCursorExit()
 	{
-		Debug.Log("Exit");
+		EventParameters parameters = new EventParameters();
+		parameters.@string = "";
+
+		EventManager.Instance.TriggerEvent(EventManager.EventType.OnCursorExit, parameters);
 	}
 
 	public void OnInteraction()
 	{
 		Debug.Log("Picked up :" + item.label);
 
-		EventParameters parameters;
-		parameters.item = item;
+		EventParameters parameters = new EventParameters();
+		parameters.@item = item;
 
 		EventManager.Instance.TriggerEvent(EventManager.EventType.OnItemPickUp, parameters);
+
+		OnCursorExit();
 
 		Destroy(gameObject);
 	}

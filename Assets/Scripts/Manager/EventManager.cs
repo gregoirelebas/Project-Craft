@@ -3,24 +3,29 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct EventParameters
+public class EventParameters
 {
-	public Item item;
+	public Item @item = null;
+	public string @string = "";
 }
 
 public class EventManager : MonoBehaviour
 {
 	public enum EventType
 	{
-		OnItemPickUp
+		OnItemPickUp,
+		OnCursorEnter,
+		OnCursorExit
 	}
+
+	private static bool isQuitting = false;
 
 	private static EventManager instance = null;
 	public static EventManager Instance
 	{
 		get
 		{
-			if (instance == null)
+			if (instance == null && !isQuitting)
 			{
 				GameObject go = new GameObject("@EventManager");
 				instance = go.AddComponent<EventManager>();
@@ -35,6 +40,12 @@ public class EventManager : MonoBehaviour
 	private void Awake()
 	{
 		eventHandler = new Dictionary<EventType, Action<EventParameters>>();
+	}
+
+	private void OnApplicationQuit()
+	{
+		isQuitting = true;
+		Destroy(gameObject);		
 	}
 
 	public void StartListening(EventType type, Action<EventParameters> listener)
