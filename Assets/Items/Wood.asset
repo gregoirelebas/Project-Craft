@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Wood
   m_EditorClassIdentifier: 
   label: Wood
+  type: 0

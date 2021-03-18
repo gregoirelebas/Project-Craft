@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Stone
   m_EditorClassIdentifier: 
   label: Stone
+  type: 0
