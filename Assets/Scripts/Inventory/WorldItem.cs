@@ -20,6 +20,11 @@ public class WorldItem : MonoBehaviour, IInteractable, IHoverable
 	{
 		Debug.Log("Picked up :" + item.label);
 
+		EventParameters parameters;
+		parameters.item = item;
+
+		EventManager.Instance.TriggerEvent(EventManager.EventType.OnItemPickUp, parameters);
+
 		Destroy(gameObject);
 	}
 }
