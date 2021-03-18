@@ -3581,7 +3581,6 @@ MonoBehaviour:
   itemSlotPrefab: {fileID: 631173051146905188, guid: 30efe6333d570dc43a5ce9ff784ee3c6,
     type: 3}
   itemGridContainer: {fileID: 327077960}
-  capacity: 20
 --- !u!1 &312528327
 GameObject:
   m_ObjectHideFlags: 0
@@ -4814,10 +4813,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c0212d6dadd1db45a7e1d940b5d76dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  items:
-  - {fileID: 11400000, guid: 032e2df470712c74aaf225a633088601, type: 2}
-  - {fileID: 11400000, guid: c0a06eb4decdeed449632f73dbbfe5d5, type: 2}
-  - {fileID: 11400000, guid: dd589680b6f20b043a31d26ccfd18e71, type: 2}
+  itemBank: {fileID: 11400000, guid: a70e2be724c41354d9d19bcecd526779, type: 2}
   inventoryDisplay: {fileID: 255632999}
 --- !u!1 &1337176179
 GameObject:

@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
-	[SerializeField] private Item[] items = new Item[3];
+	[SerializeField] private ItemBank itemBank = null;
 
 	[SerializeField] private InventoryDisplay inventoryDisplay = null;
 
@@ -16,13 +16,14 @@ public class Player : MonoBehaviour
 	{
 		inventory = new Inventory(10);
 
-		inventory.AddItem(items[0]);
-		inventory.AddItem(items[1]);
-		inventory.AddItem(items[2]);
-		inventory.AddItem(items[1]);
-		inventory.AddItem(items[1]);
-		inventory.AddItem(items[2]);
-		inventory.AddItem(items[0]);
+		inventory.AddItem(itemBank.GetItemByLabel("Shovel"));
+		inventory.AddItem(itemBank.GetItemByLabel("Stone"));
+		inventory.AddItem(itemBank.GetItemByLabel("Wood"));
+		inventory.AddItem(itemBank.GetItemByLabel("Wood"));
+		inventory.AddItem(itemBank.GetItemByLabel("Stone"));
+		inventory.AddItem(itemBank.GetItemByLabel("Shovel"));
+		inventory.AddItem(itemBank.GetItemByLabel("Wood"));
+		inventory.AddItem(itemBank.GetItemByLabel("Stone"));
 	}
 
 	private void Update()
