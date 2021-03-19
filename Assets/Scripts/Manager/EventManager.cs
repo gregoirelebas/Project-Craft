@@ -15,7 +15,9 @@ public class EventManager : MonoBehaviour
 	{
 		OnItemPickUp,
 		OnCursorEnter,
-		OnCursorExit
+		OnCursorExit,
+		OnMenuOpened,
+		OnMenuClosed,
 	}
 
 	private static bool isQuitting = false;
@@ -82,6 +84,19 @@ public class EventManager : MonoBehaviour
 		if (eventHandler.ContainsKey(type))
 		{
 			eventHandler.Remove(type);
+		}
+		else
+		{
+			Debug.LogWarning("The event handler do not contain an event of type : " + type.ToString());
+		}
+	}
+
+	public void TriggerEvent(EventType type)
+	{
+		Action<EventParameters> thisEvent;
+		if (eventHandler.TryGetValue(type, out thisEvent))
+		{
+			thisEvent?.Invoke(null);
 		}
 		else
 		{

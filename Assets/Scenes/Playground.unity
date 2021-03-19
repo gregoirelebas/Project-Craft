@@ -3522,7 +3522,7 @@ RectTransform:
   m_Children:
   - {fileID: 327077960}
   m_Father: {fileID: 1831401080}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -5022,7 +5022,7 @@ RectTransform:
   - {fileID: 678080717}
   - {fileID: 542405796}
   m_Father: {fileID: 1831401080}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -8333,8 +8333,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 2009566765}
-  - {fileID: 255632996}
   - {fileID: 1050061990}
+  - {fileID: 255632996}
   m_Father: {fileID: 0}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -22,6 +22,23 @@ public class GameManager : MonoBehaviour
 		}
 
 		player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+
+		LockCursor(null);
+
+		EventManager.Instance.StartListening(EventManager.EventType.OnMenuOpened, UnlockCursor);
+		EventManager.Instance.StartListening(EventManager.EventType.OnMenuClosed, LockCursor);
+	}
+
+	private void LockCursor(EventParameters parameters)
+	{
+		Cursor.visible = false;
+		Cursor.lockState = CursorLockMode.Locked;
+	}
+
+	private void UnlockCursor(EventParameters parameters)
+	{
+		Cursor.visible = true;
+		Cursor.lockState = CursorLockMode.Confined;
 	}
 
 	public Player GetPlayer()

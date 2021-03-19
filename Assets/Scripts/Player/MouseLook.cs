@@ -15,11 +15,6 @@ public class MouseLook : MonoBehaviour
 
 	private GameObject cursorHover = null;
 
-	private void Awake()
-	{
-		Cursor.lockState = CursorLockMode.Locked;
-	}
-
 	private void Update()
 	{
 		mouseInput *= Time.deltaTime * mouseSensivity;

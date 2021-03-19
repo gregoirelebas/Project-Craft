@@ -35,6 +35,12 @@ public class Player : MonoBehaviour
 			if (showInventory)
 			{
 				inventoryDisplay.SetInventory(inventory);
+
+				EventManager.Instance.TriggerEvent(EventManager.EventType.OnMenuOpened);
+			}
+			else
+			{
+				EventManager.Instance.TriggerEvent(EventManager.EventType.OnMenuClosed);
 			}
 		}
 	}
