@@ -5,9 +5,6 @@ using UnityEngine.UI;
 
 public class ItemSlot : MonoBehaviour
 {
-	[SerializeField] private Sprite ressourceIcon = null;
-	[SerializeField] private Sprite toolIcon = null;
-
 	[SerializeField] private Image icon = null;
 
 	private Item item = null;
@@ -18,20 +15,7 @@ public class ItemSlot : MonoBehaviour
 
 		if (item != null)
 		{
-			switch (item.type)
-			{
-				case Item.ItemType.Ressource:
-					icon.sprite = ressourceIcon;
-					break;
-
-				case Item.ItemType.Tool:
-					icon.sprite = toolIcon;
-					break;
-
-				default:
-					Debug.LogError("Unknown item type : " + item.type.ToString());
-					break;
-			}
+			icon.sprite = item.sprite;
 		}
 		else
 		{

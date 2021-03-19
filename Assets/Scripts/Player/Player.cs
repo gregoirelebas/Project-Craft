@@ -16,14 +16,12 @@ public class Player : MonoBehaviour
 	{
 		inventory = new Inventory(10);
 
-		inventory.AddItem(itemBank.GetItemByLabel("Shovel"));
-		inventory.AddItem(itemBank.GetItemByLabel("Stone"));
-		inventory.AddItem(itemBank.GetItemByLabel("Wood"));
-		inventory.AddItem(itemBank.GetItemByLabel("Wood"));
-		inventory.AddItem(itemBank.GetItemByLabel("Stone"));
-		inventory.AddItem(itemBank.GetItemByLabel("Shovel"));
-		inventory.AddItem(itemBank.GetItemByLabel("Wood"));
-		inventory.AddItem(itemBank.GetItemByLabel("Stone"));
+		//DEBUG
+		List<Item> randomItems = itemBank.GetRandomItems(5);
+		for (int i = 0; i < randomItems.Count; i++)
+		{
+			inventory.AddItem(randomItems[i]);
+		}
 	}
 
 	private void Update()

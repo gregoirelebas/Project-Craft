@@ -13,4 +13,5 @@ public class Item : ScriptableObject
 
 	public string label = "";
 	public ItemType type = ItemType.Ressource;
+	public Sprite sprite = null;
 }

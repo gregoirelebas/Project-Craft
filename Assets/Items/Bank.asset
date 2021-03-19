@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Bank
   m_EditorClassIdentifier: 
   items:
+  - {fileID: 11400000, guid: 501841bbfb58aef4db8c7d8ea37568cd, type: 2}
   - {fileID: 11400000, guid: 032e2df470712c74aaf225a633088601, type: 2}
   - {fileID: 11400000, guid: c0a06eb4decdeed449632f73dbbfe5d5, type: 2}
+  - {fileID: 11400000, guid: 366fcac0b0023bb4095d2c12ed666076, type: 2}
   - {fileID: 11400000, guid: dd589680b6f20b043a31d26ccfd18e71, type: 2}

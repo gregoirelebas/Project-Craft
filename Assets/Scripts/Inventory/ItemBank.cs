@@ -18,4 +18,17 @@ public class ItemBank : ScriptableObject
 
 		return toReturn;
 	}
+
+	public List<Item> GetRandomItems(int count)
+	{
+		List<Item> randomItems = new List<Item>();
+
+		for (int i = 0; i < count; i++)
+		{
+			int index = Random.Range(0, items.Count);
+			randomItems.Add(items[index]);
+		}
+
+		return randomItems;
+	}
 }
