@@ -8,8 +8,6 @@ public class MouseLook : MonoBehaviour
 	[SerializeField] private Transform playerCamera = null;
 	[SerializeField] private float mouseSensivity = 100.0f;
 
-	[SerializeField] private LayerMask pickUpMask = 0;
-
 	private Vector2 mouseInput = Vector2.zero;
 	private float xRotation = 0.0f;
 
@@ -52,7 +50,7 @@ public class MouseLook : MonoBehaviour
 
 	private void CastRayFromCursor()
 	{
-		if (Physics.Raycast(playerCamera.position, playerCamera.forward, out RaycastHit hit, 10.0f, pickUpMask))
+		if (Physics.Raycast(playerCamera.position, playerCamera.forward, out RaycastHit hit, 10.0f))
 		{
 			if (cursorHover != null && !hit.transform.gameObject.Equals(cursorHover))
 			{
@@ -74,7 +72,7 @@ public class MouseLook : MonoBehaviour
 		}
 	}
 
-	#region Input
+	#region InputListeners
 
 	private void OnLook(InputValue inputValue)
 	{

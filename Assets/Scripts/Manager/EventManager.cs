@@ -3,6 +3,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum EventType
+{
+	OnItemPickUp,
+	OnCursorEnter,
+	OnCursorExit,
+	OnMenuOpened,
+	OnMenuClosed,
+	OnPlayerJump,
+	OnPlayerInteract,
+}
+
 public class EventParameters
 {
 	public Item @item = null;
@@ -11,15 +22,6 @@ public class EventParameters
 
 public class EventManager : MonoBehaviour
 {
-	public enum EventType
-	{
-		OnItemPickUp,
-		OnCursorEnter,
-		OnCursorExit,
-		OnMenuOpened,
-		OnMenuClosed,
-	}
-
 	private static bool isQuitting = false;
 
 	private static EventManager instance = null;

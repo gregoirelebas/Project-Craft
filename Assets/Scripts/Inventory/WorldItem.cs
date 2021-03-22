@@ -14,7 +14,7 @@ public class WorldItem : MonoBehaviour, IInteractable, IHoverable
 		EventParameters parameters = new EventParameters();
 		parameters.@string = "Pick up";
 
-		EventManager.Instance.TriggerEvent(EventManager.EventType.OnCursorEnter, parameters);
+		EventManager.Instance.TriggerEvent(EventType.OnCursorEnter, parameters);
 	}
 
 	public void OnCursorExit()
@@ -22,7 +22,7 @@ public class WorldItem : MonoBehaviour, IInteractable, IHoverable
 		EventParameters parameters = new EventParameters();
 		parameters.@string = "";
 
-		EventManager.Instance.TriggerEvent(EventManager.EventType.OnCursorExit, parameters);
+		EventManager.Instance.TriggerEvent(EventType.OnCursorExit, parameters);
 	}
 
 	public void OnInteraction()

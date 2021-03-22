@@ -15,14 +15,14 @@ public class MainCanvas : MonoBehaviour
 
 	private void OnEnable()
 	{
-		EventManager.Instance.StartListening(EventManager.EventType.OnCursorEnter, SetTextOnCursor);
-		EventManager.Instance.StartListening(EventManager.EventType.OnCursorExit, SetTextOnCursor);
+		EventManager.Instance.StartListening(EventType.OnCursorEnter, SetTextOnCursor);
+		EventManager.Instance.StartListening(EventType.OnCursorExit, SetTextOnCursor);
 	}
 
 	private void OnDisable()
 	{
-		EventManager.Instance.StopListening(EventManager.EventType.OnCursorEnter, SetTextOnCursor);
-		EventManager.Instance.StopListening(EventManager.EventType.OnCursorExit, SetTextOnCursor);
+		EventManager.Instance.StopListening(EventType.OnCursorEnter, SetTextOnCursor);
+		EventManager.Instance.StopListening(EventType.OnCursorExit, SetTextOnCursor);
 	}
 
 	private void SetTextOnCursor(EventParameters parameters)

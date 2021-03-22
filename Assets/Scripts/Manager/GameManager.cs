@@ -25,8 +25,8 @@ public class GameManager : MonoBehaviour
 
 		LockCursor(null);
 
-		EventManager.Instance.StartListening(EventManager.EventType.OnMenuOpened, UnlockCursor);
-		EventManager.Instance.StartListening(EventManager.EventType.OnMenuClosed, LockCursor);
+		EventManager.Instance.StartListening(EventType.OnMenuOpened, UnlockCursor);
+		EventManager.Instance.StartListening(EventType.OnMenuClosed, LockCursor);
 	}
 
 	private void LockCursor(EventParameters parameters)
