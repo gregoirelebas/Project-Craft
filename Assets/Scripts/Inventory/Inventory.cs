@@ -13,21 +13,33 @@ public class Inventory
 		this.capacity = capacity;
 	}
 
+	/// <summary>
+	/// Return the capacity of this inventory.
+	/// </summary>
 	public int GetCapacity()
 	{
 		return capacity;
 	}
 
+	/// <summary>
+	/// Get the current item count.
+	/// </summary>
 	public int GetItemCount()
 	{
 		return items.Count;
 	}
 
+	/// <summary>
+	/// Return true if at least one slot is free.
+	/// </summary>
 	public bool HasFreeSpace()
 	{
 		return items.Count < capacity;
 	}
 
+	/// <summary>
+	/// Return the item corresponding to the index.
+	/// </summary>
 	public Item GetItem(int index)
 	{
 		if (index >= 0 && index < items.Count)
@@ -41,6 +53,9 @@ public class Inventory
 		}
 	}
 
+	/// <summary>
+	/// Add a new item in the inventory.
+	/// </summary>
 	public void AddItem(Item newItem)
 	{
 		items.Add(newItem);

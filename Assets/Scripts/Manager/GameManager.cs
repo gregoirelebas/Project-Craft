@@ -34,6 +34,9 @@ public class GameManager : MonoBehaviour
 		EventManager.Instance.StartListening(EventType.OnMenuClosed, LockCursor);
 	}
 
+	/// <summary>
+	/// Find reference after a new scene was loaded.
+	/// </summary>
 	private void InitOnSceneLoaded(Scene scene = new Scene(), LoadSceneMode mode = LoadSceneMode.Single)
 	{
 		player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
@@ -50,23 +53,35 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Lock and hide the mouse cursor.
+	/// </summary>
 	private void LockCursor(EventParameters parameters)
 	{
 		Cursor.visible = false;
 		Cursor.lockState = CursorLockMode.Locked;
 	}
 
+	/// <summary>
+	/// Inlock and show the mouse cursor.
+	/// </summary>
 	private void UnlockCursor(EventParameters parameters)
 	{
 		Cursor.visible = true;
 		Cursor.lockState = CursorLockMode.None;
 	}
 
+	/// <summary>
+	/// Return the current player in scene.
+	/// </summary>
 	public Player GetPlayer()
 	{
 		return player;
 	}
 
+	/// <summary>
+	/// Return the mouse position with canvas ratio and scale.
+	/// </summary>
 	public Vector2 GetMousePositionInCanvas(Vector2 mousePosition)
 	{
 		return mousePosition * scaleRatio;

@@ -19,6 +19,7 @@ public class FPSDisplay : MonoBehaviour
 
 	private void Update()
 	{
+		//Compute the avarage count of FPS.
 		totalFPS += 1 / Time.unscaledDeltaTime;
 		frameCount++;
 

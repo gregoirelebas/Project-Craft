@@ -21,11 +21,17 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		icon.sprite = null;
 	}
 
+	/// <summary>
+	/// Set the inventory display component.
+	/// </summary>
 	public void SetInventoryDisplay(InventoryDisplay display)
 	{
 		this.display = display;
 	}
 
+	/// <summary>
+	/// Called on mouse down.
+	/// </summary>
 	public void OnPointerDown(PointerEventData eventData)
 	{
 		ItemSlot slot = eventData.pointerEnter.GetComponent<ItemSlot>();
@@ -35,6 +41,9 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		}
 	}
 
+	/// <summary>
+	/// Called on mouse up.
+	/// </summary>
 	public void OnPointerUp(PointerEventData eventData)
 	{
 		ItemSlot slot = eventData.pointerEnter.GetComponent<ItemSlot>();
@@ -48,6 +57,9 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		}
 	}
 
+	/// <summary>
+	/// Set the item to diplay.
+	/// </summary>
 	public void SetItem(Item item)
 	{
 		this.item = item;
@@ -62,6 +74,9 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		}
 	}
 
+	/// <summary>
+	/// Return the current item.
+	/// </summary>
 	public Item GetItem()
 	{
 		return item;

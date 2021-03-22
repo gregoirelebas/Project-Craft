@@ -24,6 +24,9 @@ public class MainCanvas : MonoBehaviour
 		EventManager.Instance.StopListening(EventType.OnCursorExit, SetTextOnCursor);
 	}
 
+	/// <summary>
+	/// Set the information text near the cursor.
+	/// </summary>
 	private void SetTextOnCursor(EventParameters parameters)
 	{
 		cursorText.text = parameters.@string;

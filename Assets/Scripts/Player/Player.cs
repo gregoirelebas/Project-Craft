@@ -79,6 +79,7 @@ public class Player : MonoBehaviour
 	{
 		CheckGround();
 
+		//Block movement if in menu.
 		if (!showInventory)
 		{
 			mouseLook.OnUpdate(ref movement);
@@ -88,6 +89,7 @@ public class Player : MonoBehaviour
 			controller.Move(movement * Time.deltaTime);
 		}
 
+		//Show/hide inventory if player is on ground
 		if (Keyboard.current.iKey.wasPressedThisFrame && currentState == PlayerState.Ground)
 		{
 			showInventory = !showInventory;
@@ -157,6 +159,9 @@ public class Player : MonoBehaviour
 
 	#endregion
 
+	/// <summary>
+	/// Cast a sphere and check if player is near ground.
+	/// </summary>
 	private void CheckGround()
 	{
 		isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -164,21 +169,33 @@ public class Player : MonoBehaviour
 
 	#region Getter
 
+	/// <summary>
+	/// Return true if player is near the ground.
+	/// </summary>
 	public bool IsGrounded()
 	{
 		return isGrounded;
 	}
 
+	/// <summary>
+	/// Return the gravity applied on player.
+	/// </summary>
 	public float GetGravity()
 	{
 		return gravity;
 	}
 
+	/// <summary>
+	/// Return the move input read by PlayerInput.
+	/// </summary>
 	public Vector2 GetMoveInput()
 	{
 		return moveInput;
 	}
 
+	/// <summary>
+	/// Return the look input read by PlayerInput.
+	/// </summary>
 	public Vector2 GetLookInput()
 	{
 		return lookInput;
@@ -186,6 +203,9 @@ public class Player : MonoBehaviour
 
 	#endregion
 
+	/// <summary>
+	/// Set a new state : call OnStateExit on previous state and OnStateEnter on new state.
+	/// </summary>
 	public void SetState(PlayerState newState)
 	{
 		states[(int)currentState].OnExitState();
@@ -196,6 +216,9 @@ public class Player : MonoBehaviour
 		states[(int)currentState].OnEnterState();
 	}
 
+	/// <summary>
+	/// Add a new item in player's inventory.
+	/// </summary>
 	public bool AddItem(Item item)
 	{
 		if (item != null && inventory.HasFreeSpace())

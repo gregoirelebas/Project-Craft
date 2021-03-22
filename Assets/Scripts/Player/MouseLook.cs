@@ -41,6 +41,9 @@ public class MouseLook : PlayerBaseState
 		}
 	}
 
+	/// <summary>
+	/// Call OnHoverEnter() if the gameobject implement IHoverable interface.
+	/// </summary>
 	private void OnHoverEnter(GameObject newHover)
 	{
 		cursorHover = newHover;
@@ -52,6 +55,9 @@ public class MouseLook : PlayerBaseState
 		}
 	}
 
+	/// <summary>
+	/// Call OnHoverExit() if the gameobject implement IHoverable interface.
+	/// </summary>
 	private void OnHoverExit()
 	{
 		IHoverable hover = cursorHover.GetComponent<IHoverable>();
@@ -63,6 +69,9 @@ public class MouseLook : PlayerBaseState
 		cursorHover = null;
 	}
 
+	/// <summary>
+	/// Cast a ray from camera position to camera forward vector. Call OnHover Enter/Exit if a gameobject was hit.
+	/// </summary>
 	private void CastRayFromCursor()
 	{
 		if (Physics.Raycast(playerCamera.position, playerCamera.forward, out RaycastHit hit, interactionDistance))

@@ -7,6 +7,9 @@ public class ItemBank : ScriptableObject
 {
 	[SerializeField] private List<Item> items = null;
 
+	/// <summary>
+	/// Return the an item matching the label. Return null if none was found.
+	/// </summary>
 	public Item GetItemByLabel(string label)
 	{
 		Item toReturn = items.Find(x => x.label.Equals(label));
@@ -19,6 +22,9 @@ public class ItemBank : ScriptableObject
 		return toReturn;
 	}
 
+	/// <summary>
+	/// Get a random list of items (use for debug).
+	/// </summary>
 	public List<Item> GetRandomItems(int count)
 	{
 		List<Item> randomItems = new List<Item>();

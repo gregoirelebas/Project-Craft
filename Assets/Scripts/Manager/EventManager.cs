@@ -52,6 +52,9 @@ public class EventManager : MonoBehaviour
 		Destroy(gameObject);		
 	}
 
+	/// <summary>
+	/// Subscribe to the event and invoke [listener] when triggered.
+	/// </summary>
 	public void StartListening(EventType type, Action<EventParameters> listener)
 	{
 		Action<EventParameters> thisEvent;
@@ -67,6 +70,9 @@ public class EventManager : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Unsubscribe from the event.
+	/// </summary>
 	public void StopListening(EventType type, Action<EventParameters> listener)
 	{
 		Action<EventParameters> thisEvent;
@@ -81,6 +87,9 @@ public class EventManager : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Clear all action attached to this event.
+	/// </summary>
 	public void RemoveEvent(EventType type)
 	{
 		if (eventHandler.ContainsKey(type))
@@ -93,6 +102,9 @@ public class EventManager : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Trigger an event and invoke all attached actions.
+	/// </summary>
 	public void TriggerEvent(EventType type)
 	{
 		Action<EventParameters> thisEvent;
@@ -106,6 +118,9 @@ public class EventManager : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Trigger an event an invoke all attached actions with parameters.
+	/// </summary>
 	public void TriggerEvent(EventType type, EventParameters parameters)
 	{
 		Action<EventParameters> thisEvent;

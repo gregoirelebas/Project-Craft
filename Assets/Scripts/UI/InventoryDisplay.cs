@@ -18,13 +18,7 @@ public class InventoryDisplay : MonoBehaviour
 		}
 	}
 
-	[Header("Slot prefab")]
-	[SerializeField] private ItemSlot itemSlotPrefab = null;
-
-	[Header("Slots container")]
 	[SerializeField] private Transform itemGridContainer = null;
-
-	[Header("Selected item icon")]
 	[SerializeField] private Image selectedIcon = null;
 
 	private Inventory inventory = null;
@@ -61,6 +55,9 @@ public class InventoryDisplay : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Clear all slots and set inventory's items.
+	/// </summary>
 	private void RefreshDisplay()
 	{
 		if (inventory != null)
@@ -93,6 +90,9 @@ public class InventoryDisplay : MonoBehaviour
 		RefreshDisplay();
 	}
 
+	/// <summary>
+	/// Set selection after mouse down on slot. [slot] can't be null!
+	/// </summary>
 	public void OnSelectionDown(ItemSlot slot, Item item)
 	{
 		if (item != null)
@@ -105,6 +105,9 @@ public class InventoryDisplay : MonoBehaviour
 		}
 	}
 
+	/// <summary>
+	/// Call when mouse is up after selection. [slot] can be null!
+	/// </summary>
 	public void OnSelectionUp(ItemSlot slot, Item item)
 	{
 		if (slot != null && selection.slot != null)
