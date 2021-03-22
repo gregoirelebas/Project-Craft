@@ -3593,7 +3593,7 @@ GameObject:
   - component: {fileID: 312528330}
   - component: {fileID: 312528329}
   m_Layer: 8
-  m_Name: Capsule
+  m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5041,7 +5041,6 @@ GameObject:
   - component: {fileID: 1308631771}
   - component: {fileID: 1308631774}
   - component: {fileID: 1308631776}
-  - component: {fileID: 1308631775}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -5115,20 +5114,6 @@ MonoBehaviour:
   m_DefaultActionMap: Player
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 963194227}
---- !u!114 &1308631775
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1308631770}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ce258cc291c8ec498c282582896ae34, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerCamera: {fileID: 963194228}
-  mouseSensivity: 10
 --- !u!114 &1308631776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5143,6 +5128,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemBank: {fileID: 11400000, guid: a70e2be724c41354d9d19bcecd526779, type: 2}
   inventoryDisplay: {fileID: 255632999}
+  mouseLook:
+    playerCamera: {fileID: 963194228}
+    mouseSensivity: 10
+    minXRotation: -90
+    maxXRotation: 90
+    interactionDistance: 3
   groundState:
     moveSpeed: 12
     jumpHeight: 3

@@ -11,12 +11,6 @@ public enum PlayerState
 	Count //KEEP AT END
 }
 
-public enum PlayerInputType
-{
-	Jump,
-	Interact
-}
-
 public class Player : MonoBehaviour
 {
 	[SerializeField] private ItemBank itemBank = null;
@@ -28,6 +22,9 @@ public class Player : MonoBehaviour
 	//Inventory
 	private Inventory inventory = null;
 	private bool showInventory = false;
+
+	[Header("Camera controls")]
+	[SerializeField] private MouseLook mouseLook = null;
 
 	[Header("Player states")]
 	[SerializeField] private PlayerGroundState groundState = null;
@@ -50,13 +47,14 @@ public class Player : MonoBehaviour
 	private Vector2 moveInput = Vector2.zero;
 	private Vector2 lookInput = Vector2.zero;
 	private bool jumpInput = false;
-	private bool interactInput = false;
 
 	private void Awake()
 	{
 		controller = GetComponent<CharacterController>();
 
 		states = new PlayerBaseState[(int)PlayerState.Count];
+
+		mouseLook.SetPlayer(this);
 
 		groundState.SetPlayer(this);
 		states[(int)PlayerState.Ground] = groundState;
@@ -82,6 +80,8 @@ public class Player : MonoBehaviour
 	private void Update()
 	{
 		CheckGround();
+
+		mouseLook.OnUpdate(ref movement);
 
 		states[(int)currentState].OnUpdate(ref movement);
 
@@ -139,6 +139,7 @@ public class Player : MonoBehaviour
 		if (value.isPressed)
 		{
 			jumpInput = true;
+			
 			//EventManager.Instance.TriggerEvent(EventType.OnPlayerJump);
 		}
 	}
@@ -146,8 +147,9 @@ public class Player : MonoBehaviour
 	private void OnInteract(InputValue value)
 	{
 		if (value.isPressed)
-		{
-			interactInput = true;
+		{			
+			mouseLook.OnInteraction();
+
 			//EventManager.Instance.TriggerEvent(EventType.OnPlayerInteract);
 		}
 	}
@@ -181,16 +183,6 @@ public class Player : MonoBehaviour
 		return lookInput;
 	}
 
-	public bool GetJumpInput()
-	{
-		return jumpInput;
-	}
-
-	public bool GetInteractInput()
-	{
-		return interactInput;
-	}
-
 	#endregion
 
 	public void SetState(PlayerState newState)
@@ -203,35 +195,16 @@ public class Player : MonoBehaviour
 		states[(int)currentState].OnEnterState();
 	}
 
-	public bool TryToConsumeInput(PlayerInputType inputType)
+	public bool ConsumeJumpInput()
 	{
-		switch (inputType)
+		if (jumpInput)
 		{
-			case PlayerInputType.Jump:
-				if (jumpInput)
-				{
-					jumpInput = false;
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-
-			case PlayerInputType.Interact:
-				if (interactInput)
-				{
-					interactInput = false;
-					return true;
-				}
-				else
-				{
-					return false;
-				}
-		
-			default:
-				Debug.LogWarning("Unknown PlayerInputType : " + inputType.ToString());
-				return false;
+			jumpInput = false;
+			return true;
+		}
+		else
+		{
+			return false;
 		}
 	}
 

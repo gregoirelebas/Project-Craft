@@ -1,26 +1,29 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class MouseLook : MonoBehaviour
+[System.Serializable]
+public class MouseLook : PlayerBaseState
 {
 	[SerializeField] private Transform playerCamera = null;
 	[SerializeField] private float mouseSensivity = 100.0f;
+	[SerializeField] private float minXRotation = -90.0f;
+	[SerializeField] private float maxXRotation = 90.0f;
+	[SerializeField] private float interactionDistance = 2.0f;
 
-	private Vector2 mouseInput = Vector2.zero;
+	private Vector2 lookMovement = Vector2.zero;
 	private float xRotation = 0.0f;
 
 	private GameObject cursorHover = null;
 
-	private void Update()
+	public override void OnUpdate(ref Vector3 movement)
 	{
-		mouseInput *= Time.deltaTime * mouseSensivity;
+		lookMovement = player.GetLookInput() * mouseSensivity * Time.deltaTime;
 
-		xRotation -= mouseInput.y;
-		xRotation = Mathf.Clamp(xRotation, -90.0f, 90.0f);
+		xRotation -= lookMovement.y;
+		xRotation = Mathf.Clamp(xRotation, minXRotation, maxXRotation);
 
-		transform.Rotate(Vector3.up * mouseInput.x);
+		player.transform.Rotate(Vector3.up * lookMovement.x);
 		playerCamera.localRotation = Quaternion.Euler(xRotation, 0.0f, 0.0f);
 
 		CastRayFromCursor();
@@ -50,7 +53,7 @@ public class MouseLook : MonoBehaviour
 
 	private void CastRayFromCursor()
 	{
-		if (Physics.Raycast(playerCamera.position, playerCamera.forward, out RaycastHit hit, 10.0f))
+		if (Physics.Raycast(playerCamera.position, playerCamera.forward, out RaycastHit hit, interactionDistance))
 		{
 			if (cursorHover != null && !hit.transform.gameObject.Equals(cursorHover))
 			{
@@ -72,16 +75,9 @@ public class MouseLook : MonoBehaviour
 		}
 	}
 
-	#region InputListeners
-
-	private void OnLook(InputValue inputValue)
+	public void OnInteraction()
 	{
-		mouseInput = inputValue.Get<Vector2>();
-	}
-
-	private void OnInteract(InputValue inputValue)
-	{
-		if (inputValue.isPressed && cursorHover != null)
+		if (cursorHover != null)
 		{
 			IInteractable toInteract = cursorHover.GetComponent<IInteractable>();
 			if (toInteract != null)
@@ -90,6 +86,4 @@ public class MouseLook : MonoBehaviour
 			}
 		}
 	}
-
-	#endregion
 }

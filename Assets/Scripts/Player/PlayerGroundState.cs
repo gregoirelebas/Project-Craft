@@ -25,7 +25,7 @@ public class PlayerGroundState : PlayerBaseState
 			movement += player.transform.right * moveInput.x * moveSpeed;
 			movement += player.transform.forward * moveInput.y * moveSpeed;
 
-			if (player.TryToConsumeInput(PlayerInputType.Jump))
+			if (player.ConsumeJumpInput())
 			{
 				movement.y = Mathf.Sqrt(jumpHeight * -2.0f * gravity);
 				return;
