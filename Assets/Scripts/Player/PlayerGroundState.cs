@@ -8,6 +8,8 @@ public class PlayerGroundState : PlayerBaseState
 	[SerializeField] private float moveSpeed = 12.0f;
 	[SerializeField] private float jumpHeight = 3.0f;
 
+	private bool jumpInput = false;
+
 	public override void OnUpdate(ref Vector3 movement)
 	{
 		if (player.IsGrounded())
@@ -25,8 +27,10 @@ public class PlayerGroundState : PlayerBaseState
 			movement += player.transform.right * moveInput.x * moveSpeed;
 			movement += player.transform.forward * moveInput.y * moveSpeed;
 
-			if (player.ConsumeJumpInput())
+			if (jumpInput)
 			{
+				jumpInput = false;
+
 				movement.y = Mathf.Sqrt(jumpHeight * -2.0f * gravity);
 				return;
 			}
@@ -36,5 +40,10 @@ public class PlayerGroundState : PlayerBaseState
 			player.SetState(PlayerState.Air);
 			return;
 		}
+	}
+
+	public override void OnJump()
+	{
+		jumpInput = true;
 	}
 }

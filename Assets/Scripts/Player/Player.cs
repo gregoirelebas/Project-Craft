@@ -46,7 +46,6 @@ public class Player : MonoBehaviour
 	//Input
 	private Vector2 moveInput = Vector2.zero;
 	private Vector2 lookInput = Vector2.zero;
-	private bool jumpInput = false;
 
 	private void Awake()
 	{
@@ -138,7 +137,7 @@ public class Player : MonoBehaviour
 	{
 		if (value.isPressed)
 		{
-			jumpInput = true;
+			states[(int)currentState].OnJump();
 			
 			//EventManager.Instance.TriggerEvent(EventType.OnPlayerJump);
 		}
@@ -148,7 +147,7 @@ public class Player : MonoBehaviour
 	{
 		if (value.isPressed)
 		{			
-			mouseLook.OnInteraction();
+			mouseLook.OnInteract();
 
 			//EventManager.Instance.TriggerEvent(EventType.OnPlayerInteract);
 		}
@@ -193,19 +192,6 @@ public class Player : MonoBehaviour
 		currentState = newState;
 
 		states[(int)currentState].OnEnterState();
-	}
-
-	public bool ConsumeJumpInput()
-	{
-		if (jumpInput)
-		{
-			jumpInput = false;
-			return true;
-		}
-		else
-		{
-			return false;
-		}
 	}
 
 	public bool AddItem(Item item)

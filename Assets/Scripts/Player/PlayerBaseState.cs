@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public abstract class PlayerBaseState
 {
@@ -24,6 +23,16 @@ public abstract class PlayerBaseState
 	}
 
 	public virtual void OnUpdate(ref Vector3 movement)
+	{
+
+	}
+
+	public virtual void OnJump()
+	{
+
+	}
+
+	public virtual void OnInteract()
 	{
 
 	}

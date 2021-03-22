@@ -29,6 +29,18 @@ public class MouseLook : PlayerBaseState
 		CastRayFromCursor();
 	}
 
+	public override void OnInteract()
+	{
+		if (cursorHover != null)
+		{
+			IInteractable toInteract = cursorHover.GetComponent<IInteractable>();
+			if (toInteract != null)
+			{
+				toInteract.OnInteraction();
+			}
+		}
+	}
+
 	private void OnHoverEnter(GameObject newHover)
 	{
 		cursorHover = newHover;
@@ -71,18 +83,6 @@ public class MouseLook : PlayerBaseState
 			if (cursorHover != null)
 			{
 				OnHoverExit();
-			}
-		}
-	}
-
-	public void OnInteraction()
-	{
-		if (cursorHover != null)
-		{
-			IInteractable toInteract = cursorHover.GetComponent<IInteractable>();
-			if (toInteract != null)
-			{
-				toInteract.OnInteraction();
 			}
 		}
 	}
