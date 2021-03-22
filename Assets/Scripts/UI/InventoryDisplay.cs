@@ -1,15 +1,65 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class InventoryDisplay : MonoBehaviour
 {
+	private struct ItemSelection
+	{
+		public ItemSlot slot;
+		public Item item;
+
+		public void Clear()
+		{
+			slot = null;
+			item = null;
+		}
+	}
+
+	[Header("Slot prefab")]
 	[SerializeField] private ItemSlot itemSlotPrefab = null;
 
+	[Header("Slots container")]
 	[SerializeField] private Transform itemGridContainer = null;
+
+	[Header("Selected item icon")]
+	[SerializeField] private Image selectedIcon = null;
 
 	private Inventory inventory = null;
 	private List<ItemSlot> slots = new List<ItemSlot>();
+
+	private ItemSelection selection;
+	private RectTransform selectedIconTransform = null;
+	private CanvasScaler scaler = null;
+
+	private void Awake()
+	{
+		scaler = GetComponentInParent<CanvasScaler>();
+
+		selectedIcon.gameObject.SetActive(true);
+		selectedIconTransform = selectedIcon.GetComponent<RectTransform>();
+		selectedIcon.gameObject.SetActive(false);
+
+		selection.Clear();
+
+		for (int i = 0; i < itemGridContainer.childCount; i++)
+		{
+			ItemSlot slot = itemGridContainer.GetChild(i).GetComponent<ItemSlot>();
+			slot.SetInventoryDisplay(this);
+			slots.Add(slot);
+		}
+	}
+
+	private void Update()
+	{
+		if (selection.slot != null)
+		{
+			Vector2 mousePosition = Mouse.current.position.ReadValue();
+			selectedIconTransform.anchoredPosition = GameManager.Instance.GetMousePositionInCanvas(mousePosition);
+		}
+	}
 
 	private void RefreshDisplay()
 	{
@@ -17,12 +67,18 @@ public class InventoryDisplay : MonoBehaviour
 		{
 			for (int i = 0; i < slots.Count; i++)
 			{
-				slots[i].SetItem(null);
+				slots[i].gameObject.SetActive(false);
 			}
 
-			for (int i = 0; i < inventory.GetItemCount(); i++)
+			int itemCount = inventory.GetItemCount();
+			for (int i = 0; i < inventory.GetCapacity(); i++)
 			{
-				slots[i].SetItem(inventory.GetItem(i));
+				slots[i].gameObject.SetActive(true);
+
+				if (i < itemCount)
+				{
+					slots[i].SetItem(inventory.GetItem(i));
+				}
 			}
 		}
 	}
@@ -34,28 +90,31 @@ public class InventoryDisplay : MonoBehaviour
 	{
 		this.inventory = inventory;
 
-		int inventoryCapacity = inventory.GetCapacity();
-		int oldCount = slots.Count;
-
-		//If our current inventory is too small, add slots.
-		if (slots.Count < inventoryCapacity)
-		{
-			for (int i = oldCount; i < inventoryCapacity; i++)
-			{
-				ItemSlot newSlot = Instantiate(itemSlotPrefab, itemGridContainer);
-				slots.Add(newSlot);
-			}
-		}
-		//Else if our current inventory is too big, remove slots.
-		else if (slots.Count > inventoryCapacity)
-		{
-			for (int i = inventoryCapacity; i < oldCount; i++)
-			{
-				Destroy(slots[0].gameObject);
-				slots.RemoveAt(0);				
-			}
-		}
-
 		RefreshDisplay();
+	}
+
+	public void OnSelectionDown(ItemSlot slot, Item item)
+	{
+		if (item != null)
+		{
+			selection.slot = slot;
+			selection.item = item;
+
+			selectedIcon.gameObject.SetActive(true);
+			selectedIcon.sprite = item.sprite;
+		}
+	}
+
+	public void OnSelectionUp(ItemSlot slot, Item item)
+	{
+		if (slot != null && selection.slot != null)
+		{
+			selection.slot.SetItem(item);
+			slot.SetItem(selection.item);
+		}
+
+		selectedIcon.gameObject.SetActive(false);
+
+		selection.Clear();
 	}
 }
