@@ -7,7 +7,6 @@ public enum PlayerState
 {
 	Ground,
 	Air,
-	Menu,
 	Count //KEEP AT END
 }
 
@@ -80,13 +79,16 @@ public class Player : MonoBehaviour
 	{
 		CheckGround();
 
-		mouseLook.OnUpdate(ref movement);
+		if (!showInventory)
+		{
+			mouseLook.OnUpdate(ref movement);
 
-		states[(int)currentState].OnUpdate(ref movement);
+			states[(int)currentState].OnUpdate(ref movement);
 
-		controller.Move(movement * Time.deltaTime);
+			controller.Move(movement * Time.deltaTime);
+		}
 
-		if (Keyboard.current.iKey.wasPressedThisFrame)
+		if (Keyboard.current.iKey.wasPressedThisFrame && currentState == PlayerState.Ground)
 		{
 			showInventory = !showInventory;
 
@@ -138,7 +140,7 @@ public class Player : MonoBehaviour
 		if (value.isPressed)
 		{
 			states[(int)currentState].OnJump();
-			
+
 			//EventManager.Instance.TriggerEvent(EventType.OnPlayerJump);
 		}
 	}
@@ -146,7 +148,7 @@ public class Player : MonoBehaviour
 	private void OnInteract(InputValue value)
 	{
 		if (value.isPressed)
-		{			
+		{
 			mouseLook.OnInteract();
 
 			//EventManager.Instance.TriggerEvent(EventType.OnPlayerInteract);
