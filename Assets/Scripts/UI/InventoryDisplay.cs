@@ -6,37 +6,22 @@ using UnityEngine.UI;
 
 public class InventoryDisplay : MonoBehaviour
 {
-	private struct ItemSelection
-	{
-		public ItemSlot slot;
-		public Item item;
-
-		public void Clear()
-		{
-			slot = null;
-			item = null;
-		}
-	}
-
 	[SerializeField] private Transform itemGridContainer = null;
 	[SerializeField] private Image selectedIcon = null;
 
 	private Inventory inventory = null;
 	private List<ItemSlot> slots = new List<ItemSlot>();
 
-	private ItemSelection selection;
+	private ItemSlot selection = null;
 	private RectTransform selectedIconTransform = null;
-	private CanvasScaler scaler = null;
 
 	private void Awake()
 	{
-		scaler = GetComponentInParent<CanvasScaler>();
-
 		selectedIcon.gameObject.SetActive(true);
 		selectedIconTransform = selectedIcon.GetComponent<RectTransform>();
 		selectedIcon.gameObject.SetActive(false);
 
-		selection.Clear();
+		selection = null;
 
 		for (int i = 0; i < itemGridContainer.childCount; i++)
 		{
@@ -48,7 +33,7 @@ public class InventoryDisplay : MonoBehaviour
 
 	private void Update()
 	{
-		if (selection.slot != null)
+		if (selection != null)
 		{
 			Vector2 mousePosition = Mouse.current.position.ReadValue();
 			selectedIconTransform.anchoredPosition = GameManager.Instance.GetMousePositionInCanvas(mousePosition);
@@ -74,7 +59,8 @@ public class InventoryDisplay : MonoBehaviour
 
 				if (i < itemCount)
 				{
-					slots[i].SetItem(inventory.GetItem(i));
+					Inventory.InventorySlot slot = inventory.GetInventorySlot(i);
+					slots[i].SetItem(slot.item, slot.count);
 				}
 			}
 		}
@@ -93,12 +79,13 @@ public class InventoryDisplay : MonoBehaviour
 	/// <summary>
 	/// Set selection after mouse down on slot. [slot] can't be null!
 	/// </summary>
-	public void OnSelectionDown(ItemSlot slot, Item item)
+	public void OnSelectionDown(ItemSlot slot)
 	{
+		Item item = slot.GetItem();
+
 		if (item != null)
 		{
-			selection.slot = slot;
-			selection.item = item;
+			selection = slot;
 
 			selectedIcon.gameObject.SetActive(true);
 			selectedIcon.sprite = item.sprite;
@@ -108,16 +95,19 @@ public class InventoryDisplay : MonoBehaviour
 	/// <summary>
 	/// Call when mouse is up after selection. [slot] can be null!
 	/// </summary>
-	public void OnSelectionUp(ItemSlot slot, Item item)
+	public void OnSelectionUp(ItemSlot slot)
 	{
-		if (slot != null && selection.slot != null)
+		if (slot != null && selection != null)
 		{
-			selection.slot.SetItem(item);
-			slot.SetItem(selection.item);
+			Item itemBuffer = selection.GetItem();
+			int countBuffer = selection.GetItemCount();
+
+			selection.SetItem(slot.GetItem(), slot.GetItemCount());
+			slot.SetItem(itemBuffer, countBuffer);
 		}
 
 		selectedIcon.gameObject.SetActive(false);
 
-		selection.Clear();
+		selection = null;
 	}
 }

@@ -4,12 +4,18 @@ using UnityEngine;
 
 public class Inventory
 {
-	private List<Item> items = null;
+	public class InventorySlot
+	{
+		public Item item = null;
+		public int count = 0;
+	}
+
+	private List<InventorySlot> itemSlots = null;
 	private int capacity = 0;
 
 	public Inventory(int capacity)
 	{
-		items = new List<Item>();
+		itemSlots = new List<InventorySlot>();
 		this.capacity = capacity;
 	}
 
@@ -26,7 +32,7 @@ public class Inventory
 	/// </summary>
 	public int GetItemCount()
 	{
-		return items.Count;
+		return itemSlots.Count;
 	}
 
 	/// <summary>
@@ -34,17 +40,17 @@ public class Inventory
 	/// </summary>
 	public bool HasFreeSpace()
 	{
-		return items.Count < capacity;
+		return itemSlots.Count < capacity;
 	}
 
 	/// <summary>
 	/// Return the item corresponding to the index.
 	/// </summary>
-	public Item GetItem(int index)
+	public InventorySlot GetInventorySlot(int index)
 	{
-		if (index >= 0 && index < items.Count)
+		if (index >= 0 && index < itemSlots.Count)
 		{
-			return items[index];
+			return itemSlots[index];
 		}
 		else
 		{
@@ -56,8 +62,18 @@ public class Inventory
 	/// <summary>
 	/// Add a new item in the inventory.
 	/// </summary>
-	public void AddItem(Item newItem)
+	public bool AddItem(Item item, int count = 1)
 	{
-		items.Add(newItem);
+		if (itemSlots.Count < capacity)
+		{
+			InventorySlot slot = new InventorySlot();
+
+			slot.item = item;
+			slot.count = count;
+
+			itemSlots.Add(slot);
+		}
+
+		return false;
 	}
 }

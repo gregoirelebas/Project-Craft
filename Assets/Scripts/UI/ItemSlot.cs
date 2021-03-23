@@ -1,14 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 {
+	[SerializeField] private TextMeshProUGUI stackText = null;
+
 	private InventoryDisplay display = null;
 	private Item item = null;
 	private Image icon = null;
+	private int itemCount = 0;
 
 	private void Awake()
 	{
@@ -19,6 +23,8 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 	{
 		item = null;
 		icon.sprite = null;
+		itemCount = 0;
+		stackText.text = "";
 	}
 
 	/// <summary>
@@ -34,11 +40,7 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 	/// </summary>
 	public void OnPointerDown(PointerEventData eventData)
 	{
-		ItemSlot slot = eventData.pointerEnter.GetComponent<ItemSlot>();
-		if (slot != null)
-		{
-			display.OnSelectionDown(slot, slot.GetItem());
-		}
+		display.OnSelectionDown(this);
 	}
 
 	/// <summary>
@@ -46,26 +48,39 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 	/// </summary>
 	public void OnPointerUp(PointerEventData eventData)
 	{
-		ItemSlot slot = eventData.pointerEnter.GetComponent<ItemSlot>();
-		if (slot != null)
+		ItemSlot slot;
+		for (int i = 0; i < eventData.hovered.Count; i++)
 		{
-			display.OnSelectionUp(slot, slot.GetItem());
+			slot = eventData.hovered[i].GetComponent<ItemSlot>();
+			if (slot != null)
+			{
+				display.OnSelectionUp(slot);
+				return;
+			}
 		}
-		else
-		{
-			display.OnSelectionUp(null, null);
-		}
+
+		display.OnSelectionUp(null);
 	}
 
 	/// <summary>
 	/// Set the item to diplay.
 	/// </summary>
-	public void SetItem(Item item)
+	public void SetItem(Item item, int count = 1)
 	{
 		this.item = item;
+		itemCount = count;
 
 		if (item != null)
 		{
+			if (item.isStackable && itemCount > 1)
+			{
+				stackText.text = itemCount.ToString();
+			}
+			else
+			{
+				stackText.text = "";
+			}
+
 			icon.sprite = item.sprite;
 		}
 		else
@@ -80,5 +95,14 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 	public Item GetItem()
 	{
 		return item;
+	}
+
+	/// <summary>
+	/// Return the current count of this item.
+	/// </summary>
+	/// <returns></returns>
+	public int GetItemCount()
+	{
+		return itemCount;
 	}
 }

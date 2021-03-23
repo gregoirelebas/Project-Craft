@@ -66,7 +66,7 @@ public class Player : MonoBehaviour
 		List<Item> randomItems = itemBank.GetRandomItems(5);
 		for (int i = 0; i < randomItems.Count; i++)
 		{
-			inventory.AddItem(randomItems[i]);
+			inventory.AddItem(randomItems[i], randomItems[i].stackCount);
 		}
 	}
 

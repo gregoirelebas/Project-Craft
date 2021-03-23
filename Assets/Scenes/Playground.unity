@@ -4454,8 +4454,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23713873f409d4a469b52ebb7f69c48c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemSlotPrefab: {fileID: 631173051146905188, guid: 30efe6333d570dc43a5ce9ff784ee3c6,
-    type: 3}
   itemGridContainer: {fileID: 327077960}
   selectedIcon: {fileID: 1308749455}
 --- !u!1001 &295632400
