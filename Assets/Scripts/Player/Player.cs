@@ -14,12 +14,14 @@ public class Player : MonoBehaviour
 {
 	[SerializeField] private ItemBank itemBank = null;
 	[SerializeField] private InventoryDisplay inventoryDisplay = null;
+	[SerializeField] private InventoryDisplay chestDisplay = null;
 
 	private CharacterController controller = null;
 	private Vector3 movement = Vector3.zero;
 
 	//Inventory
 	private Inventory inventory = null;
+	private Inventory chestStock = null;
 	private bool showInventory = false;
 
 	[Header("Camera controls")]
@@ -61,6 +63,7 @@ public class Player : MonoBehaviour
 		states[(int)PlayerState.Air] = airState;
 
 		inventory = new Inventory(10);
+		chestStock = new Inventory(10);
 	}
 
 	private void Start()
@@ -88,10 +91,12 @@ public class Player : MonoBehaviour
 			showInventory = !showInventory;
 
 			inventoryDisplay.gameObject.SetActive(showInventory);
+			chestDisplay.gameObject.SetActive(showInventory);
 
 			if (showInventory)
 			{
 				inventoryDisplay.SetInventory(inventory);
+				chestDisplay.SetInventory(chestStock);
 
 				EventManager.Instance.TriggerEvent(EventType.OnMenuOpened);
 			}
@@ -101,15 +106,15 @@ public class Player : MonoBehaviour
 			}
 		}
 
-		if (Keyboard.current.pKey.wasPressedThisFrame)
+		if (Keyboard.current.uKey.wasPressedThisFrame)
 		{
-			if (inventory.AddItem(itemBank.GetItemByLabel("Wood"), 5))
+			if (inventory.AddItem(itemBank.GetItemByLabel("Wood"), 7))
 			{
-				Debug.Log("Added 5 wood!");
+				Debug.Log("Added wood!");
 			}
 			else
 			{
-				Debug.Log("Failed to add 5 wood!");
+				Debug.Log("Failed to add wood!");
 			}
 		}
 	}

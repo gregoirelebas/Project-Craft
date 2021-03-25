@@ -40,6 +40,14 @@ public class InventoryDisplay : MonoBehaviour
 		}
 	}
 
+	private void OnDisable()
+	{
+		for (int i = 0; i < inventory.GetCapacity(); i++)
+		{
+			inventory.UpdateInventory(i, slots[i].GetItem(), slots[i].GetItemCount());
+		}
+	}
+
 	/// <summary>
 	/// Clear all slots and set inventory's items.
 	/// </summary>
@@ -56,6 +64,7 @@ public class InventoryDisplay : MonoBehaviour
 			for (int i = 0; i < inventory.GetCapacity(); i++)
 			{
 				slots[i].gameObject.SetActive(true);
+				slots[i].ClearSlot();
 
 				if (i < itemCount)
 				{
@@ -143,6 +152,6 @@ public class InventoryDisplay : MonoBehaviour
 
 		selectedIcon.gameObject.SetActive(false);
 
-		selection = null;
+		selection = null;		
 	}
 }

@@ -19,7 +19,7 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
 		icon = GetComponent<Image>();
 	}
 
-	private void OnDisable()
+	public void ClearSlot()
 	{
 		item = null;
 		icon.sprite = null;

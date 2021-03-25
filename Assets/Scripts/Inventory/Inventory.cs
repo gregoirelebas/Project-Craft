@@ -10,28 +10,40 @@ public class Inventory
 		public int count = 0;
 	}
 
-	private List<InventorySlot> itemSlots = null;
+	private List<InventorySlot> slots = null;
 	private int capacity = 0;
 
 	public Inventory(int capacity)
 	{
-		itemSlots = new List<InventorySlot>();
+		slots = new List<InventorySlot>();
 		this.capacity = capacity;
+
+		for (int i = 0; i < capacity; i++)
+		{
+			slots.Add(new InventorySlot());
+		}
 	}
 
-	/// <summary>
-	/// Create a new slot and an item in it. Return false if failed.
-	/// </summary>
-	private bool CreateSlot(Item item, int count)
+	private int GetFreeSlot()
 	{
-		if (itemSlots.Count < capacity)
+		for (int i = 0; i < capacity; i++)
 		{
-			InventorySlot slot = new InventorySlot();
+			if (slots[i].item == null)
+			{
+				return i;
+			}
+		}
 
-			slot.item = item;
-			slot.count = count;
+		return -1;
+	}
 
-			itemSlots.Add(slot);
+	private bool AddItemFreeSlot(Item item, int count)
+	{
+		int index = GetFreeSlot();
+		if (index >= 0)
+		{
+			slots[index].item = item;
+			slots[index].count = count;
 
 			return true;
 		}
@@ -52,7 +64,7 @@ public class Inventory
 	/// </summary>
 	public int GetItemCount()
 	{
-		return itemSlots.Count;
+		return slots.Count;
 	}
 
 	/// <summary>
@@ -60,7 +72,7 @@ public class Inventory
 	/// </summary>
 	public bool HasFreeSpace()
 	{
-		return itemSlots.Count < capacity;
+		return GetFreeSlot() >= 0;
 	}
 
 	/// <summary>
@@ -68,15 +80,15 @@ public class Inventory
 	/// </summary>
 	public bool HasFreeSpace(Item item)
 	{
-		for (int i = 0; i < itemSlots.Count; i++)
+		for (int i = 0; i < slots.Count; i++)
 		{
-			if (itemSlots[i].item == item && itemSlots[i].count < item.stackCount)
+			if (slots[i].item == item && slots[i].count < item.stackCount)
 			{
 				return true;
 			}
 		}
 
-		return HasFreeSpace();
+		return GetFreeSlot() >= 0;
 	}
 
 	/// <summary>
@@ -84,9 +96,9 @@ public class Inventory
 	/// </summary>
 	public InventorySlot GetInventorySlot(int index)
 	{
-		if (index >= 0 && index < itemSlots.Count)
+		if (index >= 0 && index < slots.Count)
 		{
-			return itemSlots[index];
+			return slots[index];
 		}
 		else
 		{
@@ -102,11 +114,11 @@ public class Inventory
 	{
 		if (item.isStackable)
 		{
-			for (int i = 0; i < itemSlots.Count; i++)
+			for (int i = 0; i < slots.Count; i++)
 			{
-				if (itemSlots[i].item == item && itemSlots[i].count < item.stackCount)
+				if (slots[i].item == item && slots[i].count < item.stackCount)
 				{
-					InventorySlot slot = itemSlots[i];
+					InventorySlot slot = slots[i];
 					int totalCount = slot.count + count;
 
 					//If can be added to current stack
@@ -116,17 +128,25 @@ public class Inventory
 						return true;
 					}
 					//If need to create a new slot for leftover
-					else if (HasFreeSpace())
+					else
 					{
 						int leftOver = totalCount - item.stackCount;
-						return CreateSlot(item, leftOver);
+						if (AddItemFreeSlot(item, leftOver))
+						{
+							slot.count = item.stackCount;
+							return true;
+						}
 					}
-
-					return false;
 				}
 			}
 		}
 
-		return CreateSlot(item, count);
+		return AddItemFreeSlot(item, count);
+	}
+
+	public void UpdateInventory(int index, Item item, int count)
+	{
+		slots[index].item = item;
+		slots[index].count = count;
 	}
 }
