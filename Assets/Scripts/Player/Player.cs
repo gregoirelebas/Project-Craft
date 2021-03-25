@@ -61,13 +61,6 @@ public class Player : MonoBehaviour
 		states[(int)PlayerState.Air] = airState;
 
 		inventory = new Inventory(10);
-
-		//DEBUG
-		List<Item> randomItems = itemBank.GetRandomItems(5);
-		for (int i = 0; i < randomItems.Count; i++)
-		{
-			inventory.AddItem(itemBank.GetItemByLabel("Wood"), 5);
-		}
 	}
 
 	private void Start()
@@ -105,6 +98,18 @@ public class Player : MonoBehaviour
 			else
 			{
 				EventManager.Instance.TriggerEvent(EventType.OnMenuClosed);
+			}
+		}
+
+		if (Keyboard.current.pKey.wasPressedThisFrame)
+		{
+			if (inventory.AddItem(itemBank.GetItemByLabel("Wood"), 5))
+			{
+				Debug.Log("Added 5 wood!");
+			}
+			else
+			{
+				Debug.Log("Failed to add 5 wood!");
 			}
 		}
 	}
@@ -223,7 +228,16 @@ public class Player : MonoBehaviour
 	{
 		if (item != null && inventory.HasFreeSpace())
 		{
-			inventory.AddItem(item);
+			//If item can be stack, check all slots to add it.
+			if (item.isStackable && inventory.HasFreeSpace(item))
+			{
+				inventory.AddItem(item);
+			}
+			//If item take a full slot, check only if inventory has room for it.
+			else if (inventory.HasFreeSpace())
+			{
+				inventory.AddItem(item);
+			}
 
 			return true;
 		}

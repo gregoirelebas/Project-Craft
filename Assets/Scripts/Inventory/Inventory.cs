@@ -20,6 +20,26 @@ public class Inventory
 	}
 
 	/// <summary>
+	/// Create a new slot and an item in it. Return false if failed.
+	/// </summary>
+	private bool CreateSlot(Item item, int count)
+	{
+		if (itemSlots.Count < capacity)
+		{
+			InventorySlot slot = new InventorySlot();
+
+			slot.item = item;
+			slot.count = count;
+
+			itemSlots.Add(slot);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/// <summary>
 	/// Return the capacity of this inventory.
 	/// </summary>
 	public int GetCapacity()
@@ -44,6 +64,22 @@ public class Inventory
 	}
 
 	/// <summary>
+	/// Return true if stackable item can be added.
+	/// </summary>
+	public bool HasFreeSpace(Item item)
+	{
+		for (int i = 0; i < itemSlots.Count; i++)
+		{
+			if (itemSlots[i].item == item && itemSlots[i].count < item.stackCount)
+			{
+				return true;
+			}
+		}
+
+		return HasFreeSpace();
+	}
+
+	/// <summary>
 	/// Return the item corresponding to the index.
 	/// </summary>
 	public InventorySlot GetInventorySlot(int index)
@@ -64,16 +100,33 @@ public class Inventory
 	/// </summary>
 	public bool AddItem(Item item, int count = 1)
 	{
-		if (itemSlots.Count < capacity)
+		if (item.isStackable)
 		{
-			InventorySlot slot = new InventorySlot();
+			for (int i = 0; i < itemSlots.Count; i++)
+			{
+				if (itemSlots[i].item == item && itemSlots[i].count < item.stackCount)
+				{
+					InventorySlot slot = itemSlots[i];
+					int totalCount = slot.count + count;
 
-			slot.item = item;
-			slot.count = count;
+					//If can be added to current stack
+					if (totalCount <= item.stackCount)
+					{
+						slot.count = totalCount;
+						return true;
+					}
+					//If need to create a new slot for leftover
+					else if (HasFreeSpace())
+					{
+						int leftOver = totalCount - item.stackCount;
+						return CreateSlot(item, leftOver);
+					}
 
-			itemSlots.Add(slot);
+					return false;
+				}
+			}
 		}
 
-		return false;
+		return CreateSlot(item, count);
 	}
 }
