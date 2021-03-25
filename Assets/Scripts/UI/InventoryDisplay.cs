@@ -99,11 +99,46 @@ public class InventoryDisplay : MonoBehaviour
 	{
 		if (slot != null && selection != null)
 		{
+			Item item = slot.GetItem();
+			int count = slot.GetItemCount();
+
 			Item itemBuffer = selection.GetItem();
 			int countBuffer = selection.GetItemCount();
 
-			selection.SetItem(slot.GetItem(), slot.GetItemCount());
-			slot.SetItem(itemBuffer, countBuffer);
+			if (item == itemBuffer && count < item.stackCount)
+			{
+				int sub = item.stackCount - count;
+
+				int toAdd;
+				int countLeft;
+
+				if (sub >= countBuffer)
+				{
+					toAdd = countBuffer;
+					countLeft = 0;
+				}
+				else
+				{
+					toAdd = sub;
+					countLeft = countBuffer - sub;
+				}
+
+				if (countLeft == 0)
+				{
+					selection.SetItem(null, 0);
+				}
+				else
+				{
+					selection.SetItem(item, countLeft);
+				}
+
+				slot.SetItem(item, count + toAdd);
+			}
+			else
+			{
+				selection.SetItem(item, count);
+				slot.SetItem(itemBuffer, countBuffer);
+			}
 		}
 
 		selectedIcon.gameObject.SetActive(false);
