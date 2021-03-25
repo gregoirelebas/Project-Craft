@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
 	private MainCanvas mainCanvas = null;
 	private float scaleRatio = 0.0f;
 
+	private bool menuMode = false;
+
 	private void Awake()
 	{
 		if (Instance == null)
@@ -58,6 +60,8 @@ public class GameManager : MonoBehaviour
 	/// </summary>
 	private void LockCursor(EventParameters parameters)
 	{
+		menuMode = false;
+
 		Cursor.visible = false;
 		Cursor.lockState = CursorLockMode.Locked;
 	}
@@ -67,6 +71,8 @@ public class GameManager : MonoBehaviour
 	/// </summary>
 	private void UnlockCursor(EventParameters parameters)
 	{
+		menuMode = true;
+
 		Cursor.visible = true;
 		Cursor.lockState = CursorLockMode.None;
 	}
@@ -77,6 +83,11 @@ public class GameManager : MonoBehaviour
 	public Player GetPlayer()
 	{
 		return player;
+	}
+
+	public bool IsMenuMode()
+	{
+		return menuMode;
 	}
 
 	/// <summary>

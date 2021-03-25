@@ -13,15 +13,12 @@ public enum PlayerState
 public class Player : MonoBehaviour
 {
 	[SerializeField] private ItemBank itemBank = null;
-	[SerializeField] private InventoryDisplay inventoryDisplay = null;
-	[SerializeField] private InventoryDisplay chestDisplay = null;
 
 	private CharacterController controller = null;
 	private Vector3 movement = Vector3.zero;
 
 	//Inventory
 	private Inventory inventory = null;
-	private Inventory chestStock = null;
 	private bool showInventory = false;
 
 	[Header("Camera controls")]
@@ -42,6 +39,7 @@ public class Player : MonoBehaviour
 	private PlayerState previousState = PlayerState.Ground;
 	private PlayerState currentState = PlayerState.Ground;
 
+	private bool menuMode = false;
 	private bool isGrounded = false;
 
 	//Input
@@ -63,7 +61,12 @@ public class Player : MonoBehaviour
 		states[(int)PlayerState.Air] = airState;
 
 		inventory = new Inventory(10);
-		chestStock = new Inventory(10);
+	}
+
+	private void OnEnable()
+	{
+		EventManager.Instance.StartListening(EventType.OnMenuOpened, OnMenuOpen);
+		EventManager.Instance.StartListening(EventType.OnMenuClosed, OnMenuClose);
 	}
 
 	private void Start()
@@ -76,7 +79,7 @@ public class Player : MonoBehaviour
 		CheckGround();
 
 		//Block movement if in menu.
-		if (!showInventory)
+		if (!menuMode)
 		{
 			mouseLook.OnUpdate(ref movement);
 
@@ -86,24 +89,26 @@ public class Player : MonoBehaviour
 		}
 
 		//Show/hide inventory if player is on ground
-		if (Keyboard.current.iKey.wasPressedThisFrame && currentState == PlayerState.Ground)
+		if (Keyboard.current.iKey.wasPressedThisFrame)
 		{
 			showInventory = !showInventory;
 
-			inventoryDisplay.gameObject.SetActive(showInventory);
-			chestDisplay.gameObject.SetActive(showInventory);
+			MainCanvas.Instance.DisplayPlayerInventory(showInventory);
 
 			if (showInventory)
 			{
-				inventoryDisplay.SetInventory(inventory);
-				chestDisplay.SetInventory(chestStock);
-
 				EventManager.Instance.TriggerEvent(EventType.OnMenuOpened);
 			}
 			else
 			{
 				EventManager.Instance.TriggerEvent(EventType.OnMenuClosed);
 			}
+		}
+
+		if (Keyboard.current.yKey.wasPressedThisFrame)
+		{
+			MainCanvas.Instance.HideChestInventory();
+			EventManager.Instance.TriggerEvent(EventType.OnMenuClosed);
 		}
 
 		if (Keyboard.current.uKey.wasPressedThisFrame)
@@ -117,6 +122,12 @@ public class Player : MonoBehaviour
 				Debug.Log("Failed to add wood!");
 			}
 		}
+	}
+
+	private void OnDisable()
+	{
+		EventManager.Instance.StartListening(EventType.OnMenuOpened, OnMenuOpen);
+		EventManager.Instance.StartListening(EventType.OnMenuClosed, OnMenuClose);
 	}
 
 #if UNITY_EDITOR
@@ -177,6 +188,16 @@ public class Player : MonoBehaviour
 		isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 	}
 
+	private void OnMenuOpen(EventParameters parameters)
+	{
+		menuMode = true;
+	}
+
+	private void OnMenuClose(EventParameters parameters)
+	{
+		menuMode = false;
+	}
+
 	#region Getter
 
 	/// <summary>
@@ -211,6 +232,11 @@ public class Player : MonoBehaviour
 		return lookInput;
 	}
 
+	public Inventory GetInventory()
+	{
+		return inventory;
+	}
+
 	#endregion
 
 	/// <summary>
@@ -222,6 +248,17 @@ public class Player : MonoBehaviour
 
 		previousState = currentState;
 		currentState = newState;
+
+		states[(int)currentState].OnEnterState();
+	}
+
+	public void SetPreviousState()
+	{
+		states[(int)currentState].OnExitState();
+
+		PlayerState buffer = previousState;
+		previousState = currentState;
+		currentState = buffer;
 
 		states[(int)currentState].OnEnterState();
 	}

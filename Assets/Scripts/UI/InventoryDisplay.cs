@@ -7,20 +7,14 @@ using UnityEngine.UI;
 public class InventoryDisplay : MonoBehaviour
 {
 	[SerializeField] private Transform itemGridContainer = null;
-	[SerializeField] private Image selectedIcon = null;
 
 	private Inventory inventory = null;
 	private List<ItemSlot> slots = new List<ItemSlot>();
 
 	private ItemSlot selection = null;
-	private RectTransform selectedIconTransform = null;
 
 	private void Awake()
 	{
-		selectedIcon.gameObject.SetActive(true);
-		selectedIconTransform = selectedIcon.GetComponent<RectTransform>();
-		selectedIcon.gameObject.SetActive(false);
-
 		selection = null;
 
 		for (int i = 0; i < itemGridContainer.childCount; i++)
@@ -36,15 +30,18 @@ public class InventoryDisplay : MonoBehaviour
 		if (selection != null)
 		{
 			Vector2 mousePosition = Mouse.current.position.ReadValue();
-			selectedIconTransform.anchoredPosition = GameManager.Instance.GetMousePositionInCanvas(mousePosition);
+			MainCanvas.Instance.SetSelectedIconPosition(GameManager.Instance.GetMousePositionInCanvas(mousePosition));
 		}
 	}
 
 	private void OnDisable()
 	{
-		for (int i = 0; i < inventory.GetCapacity(); i++)
+		if (inventory != null)
 		{
-			inventory.UpdateInventory(i, slots[i].GetItem(), slots[i].GetItemCount());
+			for (int i = 0; i < inventory.GetCapacity(); i++)
+			{
+				inventory.UpdateInventory(i, slots[i].GetItem(), slots[i].GetItemCount());
+			}
 		}
 	}
 
@@ -96,8 +93,7 @@ public class InventoryDisplay : MonoBehaviour
 		{
 			selection = slot;
 
-			selectedIcon.gameObject.SetActive(true);
-			selectedIcon.sprite = item.sprite;
+			MainCanvas.Instance.SetSelectedIconSprite(item.sprite);
 		}
 	}
 
@@ -150,8 +146,8 @@ public class InventoryDisplay : MonoBehaviour
 			}
 		}
 
-		selectedIcon.gameObject.SetActive(false);
+		MainCanvas.Instance.SetSelectedIconSprite(null);
 
-		selection = null;		
+		selection = null;
 	}
 }

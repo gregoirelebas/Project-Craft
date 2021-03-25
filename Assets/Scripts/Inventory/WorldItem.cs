@@ -25,10 +25,7 @@ public class WorldItem : MonoBehaviour, IInteractable, IHoverable
 	/// </summary>
 	public void OnCursorExit()
 	{
-		EventParameters parameters = new EventParameters();
-		parameters.@string = "";
-
-		EventManager.Instance.TriggerEvent(EventType.OnCursorExit, parameters);
+		EventManager.Instance.TriggerEvent(EventType.OnCursorExit);
 	}
 
 	/// <summary>

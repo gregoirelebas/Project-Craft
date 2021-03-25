@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PlayerBaseState
+public class PlayerBaseState
 {
 	protected Player player = null;
 	protected float gravity = 0.0f;
