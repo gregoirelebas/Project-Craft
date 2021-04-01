@@ -161,6 +161,11 @@ public class Player : MonoBehaviour
 		}
 	}
 
+	private void OnSprint(InputValue value)
+	{
+		states[(int)currentState].OnSprint(value.isPressed);
+	}
+
 	private void OnInventory(InputValue value)
 	{
 		if (value.isPressed)

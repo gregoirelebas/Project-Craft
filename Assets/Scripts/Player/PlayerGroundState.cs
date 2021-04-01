@@ -49,8 +49,9 @@ public class PlayerGroundState : PlayerBaseState
 		jumpInput = true;
 	}
 
-	public override void OnSprint()
+	public override void OnSprint(bool sprint)
 	{
-		sprintInput = true;
+		sprintInput = sprint;
+		Debug.Log(sprint);
 	}
 }

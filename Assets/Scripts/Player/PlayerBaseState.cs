@@ -58,7 +58,7 @@ public class PlayerBaseState
 	/// <summary>
 	/// Call when player receive sprint input.
 	/// </summary>
-	public virtual void OnSprint()
+	public virtual void OnSprint(bool sprint)
 	{
 
 	}

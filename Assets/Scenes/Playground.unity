@@ -15424,9 +15424,10 @@ MonoBehaviour:
     mouseSensivity: 10
     minXRotation: -90
     maxXRotation: 90
-    interactionDistance: 3
+    interactionDistance: 5
   groundState:
     moveSpeed: 12
+    sprintSpeed: 20
     jumpHeight: 3
   airState:
     moveSpeed: 6
