@@ -6,24 +6,14 @@ using UnityEngine.UI;
 
 public class InventoryDisplay : MonoBehaviour
 {
+	[SerializeField] private GameObject panel = null;
 	[SerializeField] private Transform itemGridContainer = null;
 
 	private Inventory inventory = null;
 	private List<ItemSlot> slots = new List<ItemSlot>();
 
 	private ItemSlot selection = null;
-
-	private void Awake()
-	{
-		selection = null;
-
-		for (int i = 0; i < itemGridContainer.childCount; i++)
-		{
-			ItemSlot slot = itemGridContainer.GetChild(i).GetComponent<ItemSlot>();
-			slot.SetInventoryDisplay(this);
-			slots.Add(slot);
-		}
-	}
+	private bool initSlots = false;
 
 	private void Update()
 	{
@@ -31,17 +21,6 @@ public class InventoryDisplay : MonoBehaviour
 		{
 			Vector2 mousePosition = Mouse.current.position.ReadValue();
 			MainCanvas.Instance.SetSelectedIconPosition(GameManager.Instance.GetMousePositionInCanvas(mousePosition));
-		}
-	}
-
-	private void OnDisable()
-	{
-		if (inventory != null)
-		{
-			for (int i = 0; i < inventory.GetCapacity(); i++)
-			{
-				inventory.UpdateInventory(i, slots[i].GetItem(), slots[i].GetItemCount());
-			}
 		}
 	}
 
@@ -67,6 +46,36 @@ public class InventoryDisplay : MonoBehaviour
 				{
 					Inventory.InventorySlot slot = inventory.GetInventorySlot(i);
 					slots[i].SetItem(slot.item, slot.count);
+				}
+			}
+		}
+	}
+
+	public void ShowHidePanel(bool show)
+	{
+		panel.SetActive(show);
+
+		if (show)
+		{
+			selection = null;
+		
+			if (!initSlots)
+			{
+				for (int i = 0; i < itemGridContainer.childCount; i++)
+				{
+					ItemSlot slot = itemGridContainer.GetChild(i).GetComponent<ItemSlot>();
+					slot.SetInventoryDisplay(this);
+					slots.Add(slot);
+				}
+			}
+		}
+		else
+		{
+			if (inventory != null)
+			{
+				for (int i = 0; i < inventory.GetCapacity(); i++)
+				{
+					inventory.UpdateInventory(i, slots[i].GetItem(), slots[i].GetItemCount());
 				}
 			}
 		}

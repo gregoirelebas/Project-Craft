@@ -90,7 +90,7 @@ public class MainCanvas : MonoBehaviour
 
 	public void DisplayPlayerInventory(bool display)
 	{
-		playerDisplay.gameObject.SetActive(display);
+		playerDisplay.ShowHidePanel(display);
 
 		if (display)
 		{
@@ -100,8 +100,8 @@ public class MainCanvas : MonoBehaviour
 
 	public void DisplayChestInventory(Inventory chestInventory)
 	{
-		playerChestDisplay.gameObject.SetActive(true);
-		chestDisplay.gameObject.SetActive(true);
+		playerChestDisplay.ShowHidePanel(true);
+		chestDisplay.ShowHidePanel(true);
 
 		playerChestDisplay.SetInventory(playerInventory);
 		chestDisplay.SetInventory(chestInventory);
@@ -110,7 +110,7 @@ public class MainCanvas : MonoBehaviour
 
 	public void HideChestInventory()
 	{
-		playerChestDisplay.gameObject.SetActive(false);
-		chestDisplay.gameObject.SetActive(false);
+		playerChestDisplay.ShowHidePanel(false);
+		chestDisplay.ShowHidePanel(false);
 	}
 }
