@@ -6,9 +6,11 @@ using UnityEngine;
 public class PlayerGroundState : PlayerBaseState
 {
 	[SerializeField] private float moveSpeed = 12.0f;
+	[SerializeField] private float sprintSpeed = 20.0f;
 	[SerializeField] private float jumpHeight = 3.0f;
 
 	private bool jumpInput = false;
+	private bool sprintInput = false;
 
 	public override void OnUpdate(ref Vector3 movement)
 	{
@@ -24,8 +26,8 @@ public class PlayerGroundState : PlayerBaseState
 			movement.z = 0.0f;
 
 			Vector2 moveInput = player.GetMoveInput();
-			movement += player.transform.right * moveInput.x * moveSpeed;
-			movement += player.transform.forward * moveInput.y * moveSpeed;
+			movement += player.transform.right * moveInput.x * (sprintInput ? sprintSpeed : moveSpeed);
+			movement += player.transform.forward * moveInput.y * (sprintInput ? sprintSpeed : moveSpeed);
 
 			if (jumpInput)
 			{
@@ -45,5 +47,10 @@ public class PlayerGroundState : PlayerBaseState
 	public override void OnJump()
 	{
 		jumpInput = true;
+	}
+
+	public override void OnSprint()
+	{
+		sprintInput = true;
 	}
 }

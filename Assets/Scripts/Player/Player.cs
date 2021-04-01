@@ -88,23 +88,6 @@ public class Player : MonoBehaviour
 			controller.Move(movement * Time.deltaTime);
 		}
 
-		//Show/hide inventory if player is on ground
-		if (Keyboard.current.iKey.wasPressedThisFrame)
-		{
-			showInventory = !showInventory;
-
-			MainCanvas.Instance.DisplayPlayerInventory(showInventory);
-
-			if (showInventory)
-			{
-				EventManager.Instance.TriggerEvent(EventType.OnMenuOpened);
-			}
-			else
-			{
-				EventManager.Instance.TriggerEvent(EventType.OnMenuClosed);
-			}
-		}
-
 		if (Keyboard.current.yKey.wasPressedThisFrame)
 		{
 			MainCanvas.Instance.HideChestInventory();
@@ -175,6 +158,25 @@ public class Player : MonoBehaviour
 			mouseLook.OnInteract();
 
 			//EventManager.Instance.TriggerEvent(EventType.OnPlayerInteract);
+		}
+	}
+
+	private void OnInventory(InputValue value)
+	{
+		if (value.isPressed)
+		{
+			showInventory = !showInventory;
+
+			MainCanvas.Instance.DisplayPlayerInventory(showInventory);
+
+			if (showInventory)
+			{
+				EventManager.Instance.TriggerEvent(EventType.OnMenuOpened);
+			}
+			else
+			{
+				EventManager.Instance.TriggerEvent(EventType.OnMenuClosed);
+			}
 		}
 	}
 
