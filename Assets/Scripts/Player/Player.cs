@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -12,15 +12,6 @@ public enum PlayerState
 
 public class Player : MonoBehaviour
 {
-	[SerializeField] private ItemBank itemBank = null;
-
-	private CharacterController controller = null;
-	private Vector3 movement = Vector3.zero;
-
-	//Inventory
-	private Inventory inventory = null;
-	private bool showInventory = false;
-
 	[Header("Camera controls")]
 	[SerializeField] private MouseLook mouseLook = null;
 
@@ -38,6 +29,13 @@ public class Player : MonoBehaviour
 
 	private PlayerState previousState = PlayerState.Ground;
 	private PlayerState currentState = PlayerState.Ground;
+
+	private CharacterController controller = null;
+	private Vector3 movement = Vector3.zero;
+
+	//Inventory
+	private Inventory inventory = null;
+	private bool showInventory = false;
 
 	private bool menuMode = false;
 	private bool isGrounded = false;
@@ -88,24 +86,6 @@ public class Player : MonoBehaviour
 
 			controller.Move(transform.TransformDirection(movement) * Time.deltaTime);
 		}
-
-		if (Keyboard.current.yKey.wasPressedThisFrame)
-		{
-			MainCanvas.Instance.HideChestInventory();
-			EventManager.Instance.TriggerEvent(EventType.OnMenuClosed);
-		}
-
-		if (Keyboard.current.uKey.wasPressedThisFrame)
-		{
-			if (inventory.AddItem(itemBank.GetItemByLabel("Wood"), 7))
-			{
-				Debug.Log("Added wood!");
-			}
-			else
-			{
-				Debug.Log("Failed to add wood!");
-			}
-		}
 	}
 
 	private void OnDisable()
@@ -154,11 +134,11 @@ public class Player : MonoBehaviour
 
 	private void OnInteract(InputValue value)
 	{
-		if (value.isPressed)
+		if (value.isPressed && !menuMode)
 		{
 			mouseLook.OnInteract();
 
-			//EventManager.Instance.TriggerEvent(EventType.OnPlayerInteract);
+			EventManager.Instance.TriggerEvent(EventType.OnPlayerInteract);
 		}
 	}
 
@@ -176,14 +156,20 @@ public class Player : MonoBehaviour
 			showInventory = !showInventory;
 
 			MainCanvas.Instance.DisplayPlayerInventory(showInventory);
+		}
+	}
 
+	private void OnClose(InputValue value)
+	{
+		if (menuMode)
+		{
 			if (showInventory)
 			{
-				EventManager.Instance.TriggerEvent(EventType.OnMenuOpened);
+				OnInventory(value);
 			}
 			else
 			{
-				EventManager.Instance.TriggerEvent(EventType.OnMenuClosed);
+				MainCanvas.Instance.HideChestInventory();
 			}
 		}
 	}

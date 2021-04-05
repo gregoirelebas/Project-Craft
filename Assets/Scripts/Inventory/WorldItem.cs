@@ -39,7 +39,7 @@ public class WorldItem : MonoBehaviour, IInteractable, IHoverable
 		{
 			if (GameManager.Instance.GetPlayer().AddItem(item))
 			{
-				//EventManager.Instance.TriggerEvent(EventManager.EventType.OnItemPickUp, null);
+				EventManager.Instance.TriggerEvent(EventType.OnItemPickUp, null);
 
 				OnCursorExit();
 

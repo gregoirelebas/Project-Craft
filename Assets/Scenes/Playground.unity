@@ -15400,7 +15400,46 @@ MonoBehaviour:
   m_ControlsChangedEvent:
     m_PersistentCalls:
       m_Calls: []
-  m_ActionEvents: []
+  m_ActionEvents:
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 900ba2ab-fea7-4ae4-bddf-ebeab44aa4b0
+    m_ActionName: Player/Look[/Mouse/delta]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 28501f28-419e-48f0-80c8-a6c7de61fb13
+    m_ActionName: Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: b173db25-c9ca-47e9-94ef-b7308af11063
+    m_ActionName: Player/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 5c623ca1-5015-4ff4-9630-845343f72b10
+    m_ActionName: Player/Interact[/Mouse/leftButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 3e56bc21-27e6-4f66-88b9-5c4ed5de48f9
+    m_ActionName: Player/Sprint[/Keyboard/leftShift]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 85328af0-b803-4966-93cf-f06aab875c54
+    m_ActionName: Player/Inventory[/Keyboard/i]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1308631770}
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 0765b41d-b194-42f7-858d-fad076e8de0c
+    m_ActionName: Menu/Close[/Keyboard/tab]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard and Mouse
   m_DefaultActionMap: Player
@@ -15418,7 +15457,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c0212d6dadd1db45a7e1d940b5d76dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemBank: {fileID: 11400000, guid: a70e2be724c41354d9d19bcecd526779, type: 2}
   mouseLook:
     playerCamera: {fileID: 963194228}
     mouseSensivity: 10

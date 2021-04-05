@@ -31,8 +31,6 @@ public class PlayerAirState : PlayerBaseState
 			moveInput.y *= sprintMultiplier;
 		}
 
-		Debug.Log(maxSpeed);
-
 		movement.x += inertia * moveInput.x;
 		movement.z += inertia * moveInput.y;
 

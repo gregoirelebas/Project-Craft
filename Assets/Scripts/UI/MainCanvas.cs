@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class MainCanvas : MonoBehaviour
@@ -95,6 +96,11 @@ public class MainCanvas : MonoBehaviour
 		if (display)
 		{
 			playerDisplay.SetInventory(playerInventory);
+			EventManager.Instance.TriggerEvent(EventType.OnMenuOpened);
+		}
+		else
+		{
+			EventManager.Instance.TriggerEvent(EventType.OnMenuClosed);
 		}
 	}
 
@@ -106,11 +112,14 @@ public class MainCanvas : MonoBehaviour
 		playerChestDisplay.SetInventory(playerInventory);
 		chestDisplay.SetInventory(chestInventory);
 
+		EventManager.Instance.TriggerEvent(EventType.OnMenuOpened);
 	}
 
 	public void HideChestInventory()
 	{
 		playerChestDisplay.ShowHidePanel(false);
 		chestDisplay.ShowHidePanel(false);
+
+		EventManager.Instance.TriggerEvent(EventType.OnMenuClosed);
 	}
 }
