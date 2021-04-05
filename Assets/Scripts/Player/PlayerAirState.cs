@@ -5,24 +5,58 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerAirState : PlayerBaseState
 {
-	[SerializeField] private float moveSpeed = 6.0f;
+	[SerializeField] private float inertia = 0.1f;
+	[SerializeField] private float sprintMultiplier = 2.0f;
+	[SerializeField] private float maxSpeed = 20.0f;
+
+	public override void OnEnterState()
+	{
+		base.OnEnterState();
+
+		if (player.GetSprintInput())
+		{
+			maxSpeed *= sprintMultiplier;
+		}
+	}
 
 	public override void OnUpdate(ref Vector3 movement)
 	{
-		if (!player.IsGrounded())
+		movement.y += gravity * Time.deltaTime;
+
+		Vector2 moveInput = player.GetMoveInput();
+
+		if (player.GetSprintInput())
 		{
-			movement.y += gravity * Time.deltaTime;
+			moveInput.x *= sprintMultiplier;
+			moveInput.y *= sprintMultiplier;
+		}
 
-			movement.x = 0.0f;
-			movement.z = 0.0f;
+		Debug.Log(maxSpeed);
 
-			Vector2 moveInput = player.GetMoveInput();
-			movement += player.transform.right * moveInput.x * moveSpeed;
-			movement += player.transform.forward * moveInput.y * moveSpeed;
+		movement.x += inertia * moveInput.x;
+		movement.z += inertia * moveInput.y;
+
+		movement.x = Mathf.Clamp(movement.x, -maxSpeed, maxSpeed);
+		movement.z = Mathf.Clamp(movement.z, -maxSpeed, maxSpeed);
+	}
+
+	public override void OnExitState()
+	{
+		if (player.GetSprintInput())
+		{
+			maxSpeed /= sprintMultiplier;
+		}
+	}
+
+	public override void OnSprint(bool sprint)
+	{
+		if (sprint)
+		{
+			maxSpeed *= sprintMultiplier;
 		}
 		else
 		{
-			player.SetState(PlayerState.Ground);
+			maxSpeed /= sprintMultiplier;
 		}
 	}
 }

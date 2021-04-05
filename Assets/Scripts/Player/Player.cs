@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -41,6 +41,7 @@ public class Player : MonoBehaviour
 
 	private bool menuMode = false;
 	private bool isGrounded = false;
+	private bool isSprinting = false;
 
 	//Input
 	private Vector2 moveInput = Vector2.zero;
@@ -85,7 +86,7 @@ public class Player : MonoBehaviour
 
 			states[(int)currentState].OnUpdate(ref movement);
 
-			controller.Move(movement * Time.deltaTime);
+			controller.Move(transform.TransformDirection(movement) * Time.deltaTime);
 		}
 
 		if (Keyboard.current.yKey.wasPressedThisFrame)
@@ -163,7 +164,9 @@ public class Player : MonoBehaviour
 
 	private void OnSprint(InputValue value)
 	{
-		states[(int)currentState].OnSprint(value.isPressed);
+		isSprinting = value.isPressed;
+
+		states[(int)currentState].OnSprint(isSprinting);
 	}
 
 	private void OnInventory(InputValue value)
@@ -193,6 +196,14 @@ public class Player : MonoBehaviour
 	private void CheckGround()
 	{
 		isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+		if (isGrounded && currentState == PlayerState.Air)
+		{
+			SetState(PlayerState.Ground);
+		}
+		else if (!isGrounded && currentState == PlayerState.Ground)
+		{
+			SetState(PlayerState.Air);
+		}
 	}
 
 	private void OnMenuOpen(EventParameters parameters)
@@ -237,6 +248,14 @@ public class Player : MonoBehaviour
 	public Vector2 GetLookInput()
 	{
 		return lookInput;
+	}
+
+	/// <summary>
+	/// Return the sprint input read by PlayerInput.
+	/// </summary>
+	public bool GetSprintInput()
+	{
+		return isSprinting;
 	}
 
 	public Inventory GetInventory()

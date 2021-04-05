@@ -15426,11 +15426,13 @@ MonoBehaviour:
     maxXRotation: 90
     interactionDistance: 5
   groundState:
-    moveSpeed: 12
-    sprintSpeed: 20
+    moveSpeed: 10
+    sprintMultiplier: 2
     jumpHeight: 3
   airState:
-    moveSpeed: 6
+    inertia: 0.5
+    sprintMultiplier: 2
+    maxSpeed: 10
   gravity: -20
   groundCheck: {fileID: 2061914019}
   groundDistance: 0.2
