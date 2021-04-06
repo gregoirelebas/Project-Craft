@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class MainCanvas : MonoBehaviour
@@ -14,6 +13,9 @@ public class MainCanvas : MonoBehaviour
 	[SerializeField] private InventoryDisplay playerChestDisplay = null;
 	[SerializeField] private InventoryDisplay chestDisplay = null;
 	[SerializeField] private Image selectedIcon = null;
+
+	[Header("Craft")]
+	[SerializeField] private GameObject craftBook = null;
 
 	[SerializeField] private TextMeshProUGUI cursorText = null;
 
@@ -33,6 +35,7 @@ public class MainCanvas : MonoBehaviour
 
 		DisplayPlayerInventory(false);
 		HideChestInventory();
+		DisplayCraftBook(false);
 		SetSelectedIconSprite(null);
 	}
 
@@ -121,5 +124,19 @@ public class MainCanvas : MonoBehaviour
 		chestDisplay.ShowHidePanel(false);
 
 		EventManager.Instance.TriggerEvent(EventType.OnMenuClosed);
+	}
+
+	public void DisplayCraftBook(bool show)
+	{
+		craftBook.gameObject.SetActive(show);
+
+		if (show)
+		{
+			EventManager.Instance.TriggerEvent(EventType.OnMenuOpened);
+		}
+		else
+		{
+			EventManager.Instance.TriggerEvent(EventType.OnMenuClosed);
+		}
 	}
 }

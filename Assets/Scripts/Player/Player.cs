@@ -41,6 +41,8 @@ public class Player : MonoBehaviour
 	private bool isGrounded = false;
 	private bool isSprinting = false;
 
+	private bool showCraftBook = false;
+
 	//Input
 	private Vector2 moveInput = Vector2.zero;
 	private Vector2 lookInput = Vector2.zero;
@@ -159,6 +161,16 @@ public class Player : MonoBehaviour
 		}
 	}
 
+	private void OnCraft(InputValue value)
+	{
+		if (value.isPressed)
+		{
+			showCraftBook = !showCraftBook;
+
+			MainCanvas.Instance.DisplayCraftBook(showCraftBook);
+		}
+	}
+
 	private void OnClose(InputValue value)
 	{
 		if (menuMode)
@@ -166,6 +178,10 @@ public class Player : MonoBehaviour
 			if (showInventory)
 			{
 				OnInventory(value);
+			}
+			else if (showCraftBook)
+			{
+				OnCraft(value);
 			}
 			else
 			{

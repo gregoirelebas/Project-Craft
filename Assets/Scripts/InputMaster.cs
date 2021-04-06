@@ -73,6 +73,14 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Craft"",
+                    ""type"": ""Button"",
+                    ""id"": ""3d6c1a13-08b6-40da-8631-e89d129569ca"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -416,6 +424,28 @@ public class @InputMaster : IInputActionCollection, IDisposable
                     ""action"": ""Close"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""285964c0-23ca-438a-b3df-ef5d43dcfe93"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard and Mouse"",
+                    ""action"": ""Craft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ce6b7de4-9e8f-43cd-ba3b-194004420a9b"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Controller"",
+                    ""action"": ""Craft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -459,6 +489,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
         m_Player_Close = m_Player.FindAction("Close", throwIfNotFound: true);
+        m_Player_Craft = m_Player.FindAction("Craft", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -515,6 +546,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Inventory;
     private readonly InputAction m_Player_Close;
+    private readonly InputAction m_Player_Craft;
     public struct PlayerActions
     {
         private @InputMaster m_Wrapper;
@@ -526,6 +558,7 @@ public class @InputMaster : IInputActionCollection, IDisposable
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
         public InputAction @Close => m_Wrapper.m_Player_Close;
+        public InputAction @Craft => m_Wrapper.m_Player_Craft;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -556,6 +589,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @Close.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnClose;
                 @Close.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnClose;
                 @Close.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnClose;
+                @Craft.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCraft;
+                @Craft.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCraft;
+                @Craft.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCraft;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -581,6 +617,9 @@ public class @InputMaster : IInputActionCollection, IDisposable
                 @Close.started += instance.OnClose;
                 @Close.performed += instance.OnClose;
                 @Close.canceled += instance.OnClose;
+                @Craft.started += instance.OnCraft;
+                @Craft.performed += instance.OnCraft;
+                @Craft.canceled += instance.OnCraft;
             }
         }
     }
@@ -612,5 +651,6 @@ public class @InputMaster : IInputActionCollection, IDisposable
         void OnSprint(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
         void OnClose(InputAction.CallbackContext context);
+        void OnCraft(InputAction.CallbackContext context);
     }
 }
