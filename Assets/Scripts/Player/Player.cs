@@ -126,17 +126,14 @@ public class Player : MonoBehaviour
 
 	private void OnJump(InputValue value)
 	{
-		if (value.isPressed)
-		{
-			states[(int)currentState].OnJump();
+		states[(int)currentState].OnJump();
 
-			//EventManager.Instance.TriggerEvent(EventType.OnPlayerJump);
-		}
+		EventManager.Instance.TriggerEvent(EventType.OnPlayerJump);
 	}
 
 	private void OnInteract(InputValue value)
 	{
-		if (value.isPressed && !menuMode)
+		if (!menuMode)
 		{
 			mouseLook.OnInteract();
 
@@ -153,7 +150,7 @@ public class Player : MonoBehaviour
 
 	private void OnInventory(InputValue value)
 	{
-		if (value.isPressed)
+		if (!menuMode || menuMode && showInventory)
 		{
 			showInventory = !showInventory;
 
@@ -163,7 +160,7 @@ public class Player : MonoBehaviour
 
 	private void OnCraft(InputValue value)
 	{
-		if (value.isPressed)
+		if (!menuMode || menuMode && showCraftBook)
 		{
 			showCraftBook = !showCraftBook;
 
@@ -294,22 +291,11 @@ public class Player : MonoBehaviour
 	/// <summary>
 	/// Add a new item in player's inventory.
 	/// </summary>
-	public bool AddItem(Item item)
+	public bool AddItem(Item item, int count)
 	{
-		if (item != null && inventory.HasFreeSpace())
+		if (item != null)
 		{
-			//If item can be stack, check all slots to add it.
-			if (item.isStackable && inventory.HasFreeSpace(item))
-			{
-				inventory.AddItem(item);
-			}
-			//If item take a full slot, check only if inventory has room for it.
-			else if (inventory.HasFreeSpace())
-			{
-				inventory.AddItem(item);
-			}
-
-			return true;
+			return inventory.AddItem(item, count);
 		}
 
 		return false;

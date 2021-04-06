@@ -70,25 +70,43 @@ public class Inventory
 	/// <summary>
 	/// Return true if at least one slot is free.
 	/// </summary>
-	public bool HasFreeSpace()
+	public bool HasFreeSpace(int count = 0)
 	{
-		return GetFreeSlot() >= 0;
+		return GetFreeSlot() >= count;
 	}
 
 	/// <summary>
 	/// Return true if stackable item can be added.
 	/// </summary>
-	public bool HasFreeSpace(Item item)
+	public bool HasFreeSpace(Item item, int count = 1)
 	{
-		for (int i = 0; i < slots.Count; i++)
+		if (item.isStackable)
 		{
-			if (slots[i].item == item && slots[i].count < item.stackCount)
+			int totalCount = 0;
+			int totalStack = 0;
+
+			for (int i = 0; i < slots.Count; i++)
 			{
-				return true;
+				if (slots[i].item == item)
+				{
+					totalCount += slots[i].count;
+					totalStack += item.stackCount;
+				}
+			}
+
+			if (totalCount == 0)
+			{
+				return HasFreeSpace();
+			}
+			else
+			{
+				return totalCount + count < totalStack;
 			}
 		}
-
-		return GetFreeSlot() >= 0;
+		else
+		{
+			return HasFreeSpace();
+		}
 	}
 
 	/// <summary>
@@ -107,35 +125,49 @@ public class Inventory
 		}
 	}
 
+	public int GetItemCount(Item item)
+	{
+		int total = 0;
+
+		for (int i = 0; i < slots.Count; i++)
+		{
+			if (slots[i].item == item)
+			{
+				total += slots[i].count;
+			}
+		}
+
+		return total;
+	}
+
 	/// <summary>
 	/// Add a new item in the inventory.
 	/// </summary>
 	public bool AddItem(Item item, int count = 1)
 	{
-		if (item.isStackable)
+		if (item.isStackable && HasFreeSpace(item, count))
 		{
+			InventorySlot slot;
 			for (int i = 0; i < slots.Count; i++)
 			{
-				if (slots[i].item == item && slots[i].count < item.stackCount)
-				{
-					InventorySlot slot = slots[i];
-					int totalCount = slot.count + count;
+				slot = slots[i];
 
-					//If can be added to current stack
-					if (totalCount <= item.stackCount)
+				//Find a slot that has some free space
+				if (slot.item == item && slot.count < item.stackCount)
+				{
+					int canAdd = item.stackCount - slot.count;
+
+					//If everything can go inside, we're done
+					if (count <= canAdd)
 					{
-						slot.count = totalCount;
+						slot.count += count;
 						return true;
 					}
-					//If need to create a new slot for leftover
+					//If not, go to next slot and add what's left
 					else
 					{
-						int leftOver = totalCount - item.stackCount;
-						if (AddItemFreeSlot(item, leftOver))
-						{
-							slot.count = item.stackCount;
-							return true;
-						}
+						slot.count = item.stackCount;
+						count -= canAdd;
 					}
 				}
 			}
@@ -148,5 +180,26 @@ public class Inventory
 	{
 		slots[index].item = item;
 		slots[index].count = count;
+	}
+
+	public void RemoveItem(Item item, int count)
+	{
+		for (int i = 0; i < slots.Count; i++)
+		{
+			if (slots[i].item == item)
+			{
+				if (slots[i].count > count)
+				{
+					slots[i].count -= count;
+
+					return;
+				}
+				else
+				{
+					count -= slots[i].count;
+					slots[i].item = null;
+				}
+			}
+		}
 	}
 }

@@ -9,7 +9,7 @@ public class CraftRecipeBank : ScriptableObject
 
 	public CraftRecipe GetRecipeByLabel(string label)
 	{
-		CraftRecipe toReturn = recipes.Find(x => x.recipeName.Equals(label));
+		CraftRecipe toReturn = recipes.Find(x => x.label.Equals(label));
 
 		if (toReturn == null)
 		{

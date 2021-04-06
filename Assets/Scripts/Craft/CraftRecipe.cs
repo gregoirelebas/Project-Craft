@@ -18,9 +18,10 @@ public class CraftRecipe : ScriptableObject
 		}
 	}
 
-    public string recipeName = "NewRecipe";
+    public string label = "NewRecipe";
+    public Item item = null;
     public Sprite icon = null;
     public int count = 1;
     [Space]
-    public List<RecipeItem> items = null;
+    public List<RecipeItem> parts = null;
 }

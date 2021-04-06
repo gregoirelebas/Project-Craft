@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 796730e9e291e58458cf7d7d96eb249d, type: 3}
   m_Name: Stick
   m_EditorClassIdentifier: 
-  recipeName: Stick
-  icon: {fileID: 0}
+  label: Stick
+  item: {fileID: 11400000, guid: 53f3ddd75da1e314da7d52d58e4f9fb9, type: 2}
+  icon: {fileID: 21300000, guid: 233ab678c6ea25c439109214ebd1f916, type: 3}
   count: 1
-  items:
-  - item: {fileID: 11400000, guid: dd589680b6f20b043a31d26ccfd18e71, type: 2}
-    count: 4
+  parts: []

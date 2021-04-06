@@ -12,11 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 796730e9e291e58458cf7d7d96eb249d, type: 3}
   m_Name: Shovel
   m_EditorClassIdentifier: 
-  recipeName: Stone Shovel
+  label: Stone Shovel
+  item: {fileID: 11400000, guid: 032e2df470712c74aaf225a633088601, type: 2}
   icon: {fileID: 21300000, guid: 86e78a71093840543b9ec698bc9fa75b, type: 3}
   count: 1
-  items:
-  - item: {fileID: 11400000, guid: 53f3ddd75da1e314da7d52d58e4f9fb9, type: 2}
-    count: 2
-  - item: {fileID: 11400000, guid: c0a06eb4decdeed449632f73dbbfe5d5, type: 2}
-    count: 1
+  parts: []

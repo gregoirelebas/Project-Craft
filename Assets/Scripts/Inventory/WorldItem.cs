@@ -5,6 +5,7 @@ using UnityEngine;
 public class WorldItem : MonoBehaviour, IInteractable, IHoverable
 {
 	[SerializeField] private Item item = null;
+	[SerializeField] private int count = 1;
 	[SerializeField] private int resistance = 1;
 
 	private int tapCount = 0;
@@ -37,7 +38,7 @@ public class WorldItem : MonoBehaviour, IInteractable, IHoverable
 
 		if (tapCount >= resistance)
 		{
-			if (GameManager.Instance.GetPlayer().AddItem(item))
+			if (GameManager.Instance.GetPlayer().AddItem(item, count))
 			{
 				EventManager.Instance.TriggerEvent(EventType.OnItemPickUp, null);
 
